@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "1069356192142",
+    "firebase_url": "https://user-base-25c3b.firebaseio.com",
+    "project_id": "user-base-25c3b",
+    "storage_bucket": "user-base-25c3b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069356192142:android:d97c05b92c3eb643",
+        "android_client_info": {
+          "package_name": "com.couchsurf.bhargav.couchsurfing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069356192142-b9qcvm9ogfsa5jpc0jlsjenvdmb3u2pp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.couchsurf.bhargav.couchsurfing",
+            "certificate_hash": "c8d91267702dd44142694ba6aff0fee14da07a4e"
+          }
+        },
+        {
+          "client_id": "1069356192142-boct5c4q7drne59oenc2dnu51spmv0va.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1069356192142-boct5c4q7drne59oenc2dnu51spmv0va.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHSZDhQu1sfofXJuOOBVS8C1bVacRSKIM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069356192142-boct5c4q7drne59oenc2dnu51spmv0va.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

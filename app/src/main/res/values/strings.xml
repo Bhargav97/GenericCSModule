@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CouchSurfing</string>
+    <string name="login">LOGIN</string>
+    <string name="password">Password</string>
+    <string name="couch_surfing_heading">Couch Surfing</string>
+    <string name="Signup_Button_String">FIRST TIME USER?</string>
+    <string name="oauthclientID">1069356192142-boct5c4q7drne59oenc2dnu51spmv0va.apps.googleusercontent.com</string>
+</resources>
