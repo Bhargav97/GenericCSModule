@@ -1,0 +1,45 @@
+{
+  "UserAgent": "MobileHub/1.0",
+  "Version": "1.0",
+  "CredentialsProvider": {
+    "CognitoIdentity": {
+      "Default": {
+        "PoolId": "us-east-1:d5cd28cc-b9de-40ea-93bf-9e4930a102b9",
+        "Region": "us-east-1"
+      }
+    }
+  },
+  "IdentityManager": {
+    "Default": {}
+  },
+  "S3TransferUtility": {
+    "Default": {
+      "Bucket": "couchsurfing-userfiles-mobilehub-151528593",
+      "Region": "us-east-1"
+    }
+  },
+  "ContentManager": {
+    "Default": {
+      "Bucket": "couchsurfing-hosting-mobilehub-151528593",
+      "Region": "us-east-1",
+      "CloudFrontURL": "https://dstwg6rcsw39c.cloudfront.net"
+    }
+  },
+  "PinpointAnalytics": {
+    "Default": {
+      "AppId": "c133d9ea9f5443009ccded34ede1a5a2",
+      "Region": "us-east-1"
+    }
+  },
+  "PinpointTargeting": {
+    "Default": {
+      "Region": "us-east-1"
+    }
+  },
+  "UserFileManager": {
+    "Default": {
+      "Bucket": "couchsurfing-userfiles-mobilehub-151528593",
+      "Region": "us-east-1"
+    }
+  }
+}

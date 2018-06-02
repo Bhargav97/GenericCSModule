@@ -1,0 +1,24 @@
+<ScrollView
+    android:padding="15dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:id="@+id/mainLayoutAP"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:padding="20dp"
+            android:background="@color/bg"
+            android:layout_gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:text="ADMIN's Den"/>
+
+    </LinearLayout>
+
+</ScrollView>
