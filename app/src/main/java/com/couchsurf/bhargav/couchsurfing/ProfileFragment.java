@@ -321,7 +321,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
                 //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey(counter));
+                RequestOptions options = new RequestOptions().signature(new ObjectKey(sharedpreferences.getInt("DP_COUNTER",0)));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
@@ -355,11 +355,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK){
             Uri content_describer = data.getData();
+            int current = sharedpreferences.getInt("DP_COUNTER",0);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("DP_COUNTER",current+1);
+            editor.commit();
             imagePath = getRealPathFromURI(getActivity().getApplicationContext(),content_describer);
             DocumentReference updateDoc = db.collection("users").document(Uid);
             updateDoc.update(CUSTOM_DP_KEY,true);
-            counter++;
-            MainActivity.counter++;
             uploadAndChangeDpWithTransferUtility(Uid,imagePath);
 
 
@@ -446,6 +448,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     nameEdited = false;
                     name.setInputType(InputType.TYPE_NULL);
                     nameTitle.setText(nameText);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("UNAME",nameText);
+                    editor.commit();
                     updateDoc.update(NAME_KEY, nameText);
                 }
                 break;

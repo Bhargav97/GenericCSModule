@@ -30,4 +30,6 @@
     <color name="lightlightblue">#a7dbd8</color>
     <color name="lightblue">#69d2e7</color>
     <color name="login">#3f978f</color>
+    <color name="smokewhite">#F5F5F5</color>
+    <color name="black">#000000</color>
 </resources>

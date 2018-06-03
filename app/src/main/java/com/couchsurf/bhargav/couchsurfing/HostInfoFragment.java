@@ -206,6 +206,8 @@ public class HostInfoFragment extends Fragment {
                     editor.putBoolean("SIGNED_IN", true);
                     editor.putInt("USER_TYPE",1); //True is host
                     editor.putString("UID",UID);
+                    editor.putInt("DP_COUNTER",0);
+                    editor.putString("UNAME",name);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }

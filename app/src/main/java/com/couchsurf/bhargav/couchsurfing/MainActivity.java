@@ -60,7 +60,6 @@ import javax.annotation.Nullable;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
-    public static int counter = 0;
     android.support.v7.widget.Toolbar toolbar;
     static FirebaseUser firebaseUser;
     DrawerLayout drawer;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static private ActionBar actionBar;
     static ImageView userImage;
     static boolean doneFlag = false;
-
+    static SharedPreferences sharedpreferences;
     public static void setTitleToHome(){
         actionBar.setTitle("Home");
     }
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         actionBar = getSupportActionBar();
         setTitleToHome();
-        final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         USER_TYPE=sharedpreferences.getInt("USER_TYPE",0);
         if(sharedpreferences.getString("UID","").trim().equals(""))
             Toast.makeText(MainActivity.this, "Error retrieving UID",Toast.LENGTH_LONG).show();
@@ -148,8 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 final SharedPreferences.Editor editor = sharedpreferences.edit();
-                editor.putString("UNAME",documentSnapshot.get("Name").toString());
-                editor.commit();
+
                 updateNavProfilePic(getBaseContext());
             }
         });
@@ -288,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
                 //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey(counter));
+                RequestOptions options = new RequestOptions().signature(new ObjectKey(sharedpreferences.getInt("DP_COUNTER",0)));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);

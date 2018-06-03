@@ -221,6 +221,10 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
                     editor.putString("UID",uid);
                     editor.commit();
+                    editor.putInt("DP_COUNTER",0);
+                    editor.commit();
+                    editor.putString("UNAME",documentSnapshot.get("Name").toString());
+                    editor.commit();
                     //Check if he is a host or a guest
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener < DocumentSnapshot > () {
@@ -245,6 +249,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
 
                         }
 
@@ -261,6 +266,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Log.e("TAG", "Does Not Exits");
                     startActivity(new Intent(LoginActivity.this, ExtraInfoForm.class));
+                    finish();
 
                 }
             }

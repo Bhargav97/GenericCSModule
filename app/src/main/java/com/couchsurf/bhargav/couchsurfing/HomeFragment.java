@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     static public String UID;
     static public String UNAME;
     CardView regNewCouch, manageCouches, adminPanel;
+    TextView welcome;
 
     private void showViewWithAnim(int delay, View v) {
         Handler handler = new Handler();
@@ -35,20 +37,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }, 500);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = getLayoutInflater().inflate(R.layout.home_layout, container, false);
-        final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        USER_TYPE = sharedpreferences.getInt("USER_TYPE", 0);
-        if (sharedpreferences.getString("UID", "").trim().equals(""))
-            Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
-        else
-            UID = sharedpreferences.getString("UID", "");
-        UNAME = sharedpreferences.getString("UNAME", "");
-        final TextView welcome = v.findViewById(R.id.welcome_text);
-        //showViewWithAnim(500, welcome);
-        Handler handler = new Handler();
+    public void setWelcomeText() {
+        Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -57,7 +47,34 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 welcome.setVisibility(View.VISIBLE);
                 welcome.animate().alpha(1.0f);
             }
-        }, 1500);
+        }, 500);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = getLayoutInflater().inflate(R.layout.home_layout, container, false);
+        //ExtraInfoForm.setColor(getActivity().getWindow(),getActivity(),R.color.colorPrimaryDark);
+        final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        USER_TYPE = sharedpreferences.getInt("USER_TYPE", 0);
+        if (sharedpreferences.getString("UID", "").trim().equals(""))
+            Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
+        else
+            UID = sharedpreferences.getString("UID", "");
+        welcome = v.findViewById(R.id.welcome_text);
+        //showViewWithAnim(500, welcome);
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                while (sharedpreferences.getString("UNAME", "").equals("")) { }
+                UNAME = sharedpreferences.getString("UNAME", "");
+                setWelcomeText();
+
+            }
+        };
+
+        thread.start();
+
 
         regNewCouch = v.findViewById(R.id.registerCouch);
         manageCouches = v.findViewById(R.id.manageCouch);
@@ -71,13 +88,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 //
                 break;
             case 1:
-                showViewWithAnim(1000, regNewCouch);
-                showViewWithAnim(1000, manageCouches);
+                showViewWithAnim(300, regNewCouch);
+                showViewWithAnim(400, manageCouches);
                 break;
             case 2:
-                showViewWithAnim(1000, regNewCouch);
-                showViewWithAnim(1000, manageCouches);
-                showViewWithAnim(1000, adminPanel);
+                showViewWithAnim(300, regNewCouch);
+                showViewWithAnim(400, manageCouches);
+                showViewWithAnim(500, adminPanel);
                 break;
         }
         return v;
@@ -86,16 +103,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.registerCouch:
-                //
+                startActivity(new Intent(getActivity(), RegisterNewCouch.class));
                 break;
             case R.id.manageCouch:
                 //
                 break;
             case R.id.adminPanel:
                 //
-                startActivity(new Intent(getActivity(),AdminPanel.class));
+                startActivity(new Intent(getActivity(), AdminPanel.class));
                 break;
 
         }

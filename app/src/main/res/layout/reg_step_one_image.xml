@@ -1,0 +1,46 @@
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="235dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/blue" />
+
+
+
+    <TextView
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/titletext1"
+        style="@style/TutHeadingText"
+        android:fontFamily="sans-serif-regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Let the world come to you!"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_below="@id/titletext1"
+        android:id="@+id/titletext2"
+        style="@style/TutHeadingText"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:fontFamily="sans-serif-regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="35dp"
+        android:gravity="center"
+        android:text="Let's set you up to meet exciting Couch Surfers out there. It won't take long!"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>

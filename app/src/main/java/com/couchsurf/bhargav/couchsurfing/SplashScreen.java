@@ -26,6 +26,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //ExtraInfoForm.setColor(getWindow(),this,R.color.smokewhite);
         SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean b = sharedpreferences.getBoolean("SIGNED_IN",false);
         if (b) {

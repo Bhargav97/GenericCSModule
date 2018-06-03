@@ -53,4 +53,14 @@
         <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">match_parent</item>
     </style>
+    <style name="DecButtonStyle" parent="@android:style/Widget.Material.Button.Borderless">
+        <item name="android:src">@drawable/ic_sub</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="IncButtonStyle" parent="@android:style/Widget.Material.Button.Borderless">
+        <item name="android:src">@drawable/ic_add_rec</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
 </resources>

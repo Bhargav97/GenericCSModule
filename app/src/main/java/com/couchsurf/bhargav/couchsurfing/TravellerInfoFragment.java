@@ -184,6 +184,8 @@ public class TravellerInfoFragment extends Fragment {
                     editor.putBoolean("SIGNED_IN", true);
                     editor.putInt("USER_TYPE",0); //True is host
                     editor.putString("UID",UID);
+                    editor.putString("UNAME",name);
+                    editor.putInt("DP_COUNTER",0);
                     editor.commit();
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
