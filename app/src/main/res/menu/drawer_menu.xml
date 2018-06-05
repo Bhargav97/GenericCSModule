@@ -16,9 +16,9 @@
             android:icon="@drawable/ic_status"
             android:title="Status" />
         <item
-            android:id="@+id/navbook"
+            android:id="@+id/navmanage"
             android:icon="@drawable/ic_book"
-            android:title="Book" />
+            android:title="Manage" />
         <item
             android:id="@+id/navexplore"
             android:icon="@drawable/ic_explore"

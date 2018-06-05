@@ -221,8 +221,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.commit();
                     editor.putString("UID",uid);
                     editor.commit();
-                    editor.putInt("DP_COUNTER",0);
-                    editor.commit();
+
                     editor.putString("UNAME",documentSnapshot.get("Name").toString());
                     editor.commit();
                     //Check if he is a host or a guest
@@ -246,6 +245,9 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putInt("USER_TYPE", 2);
                                     editor.commit();
                                 }
+                                int DP_COUNT = Math.round((Long)doc.get("DP_CHANGE_COUNT"));
+                                editor.putInt("DP_CHANGE_COUNTER",DP_COUNT);
+                                editor.commit();
 
                             }
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));

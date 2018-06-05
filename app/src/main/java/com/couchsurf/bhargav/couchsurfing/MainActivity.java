@@ -60,10 +60,11 @@ import javax.annotation.Nullable;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
+    static int DP_CHANGE;
     android.support.v7.widget.Toolbar toolbar;
     static FirebaseUser firebaseUser;
     DrawerLayout drawer;
-    NavigationView navigationView;
+    static NavigationView navigationView;
     Button b;
     ActionBarDrawerToggle toggle;
     static public int USER_TYPE;
@@ -186,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         if(savedInstanceState==null) {
             //Do when the app begins
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).add(R.id.fragment_container, new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
             //startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             navigationView.setCheckedItem(R.id.navhome);
         }
 
     }
-    public void setNavItem(int id){
+    public static void setNavItem(int id){
         navigationView.setCheckedItem(id);
     }
 
@@ -210,8 +211,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 drawer.closeDrawers();
                // showSearch();
                 break;
-            case R.id.navbook:
-                //getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new RefFragment(),"REF").addToBackStack(null).commit();
+            case R.id.navmanage:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ManageCouches(),"MC").addToBackStack(null).commit();
                 break;
             case R.id.navexplore:
                 //getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new DSFragment(),"DS").addToBackStack(null).commit();
@@ -265,6 +266,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //MainActivity.toggleTutIcon(this,false);
             finish();
         }
+        else if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT")!=null){
+            if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
+                finish();
+        }
         super.onBackPressed();
     }
 
@@ -286,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
                 //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey(sharedpreferences.getInt("DP_COUNTER",0)));
+                RequestOptions options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+1));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);

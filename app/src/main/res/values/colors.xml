@@ -32,4 +32,5 @@
     <color name="login">#3f978f</color>
     <color name="smokewhite">#F5F5F5</color>
     <color name="black">#000000</color>
+    <color name="tint">#6F000000</color>
 </resources>

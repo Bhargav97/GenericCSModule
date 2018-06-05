@@ -47,6 +47,7 @@ public class HostInfoFragment extends Fragment {
     final private int counter = 0;
     final private String CUSTOM_DP_KEY = "CUSTOM_DP";
     final private String DESC_KEY = "DESC";
+    final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -145,6 +146,7 @@ public class HostInfoFragment extends Fragment {
                     newUser.put(BOOKING_COUNTER_KEY, 0);
                     newUser.put(CUSTOM_DP_KEY,false);
                     newUser.put(DESC_KEY,"");
+                    newUser.put(DP_CHANGE_KEY,0);
                     //Creating an empty couch subcollection first
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered
@@ -206,8 +208,8 @@ public class HostInfoFragment extends Fragment {
                     editor.putBoolean("SIGNED_IN", true);
                     editor.putInt("USER_TYPE",1); //True is host
                     editor.putString("UID",UID);
-                    editor.putInt("DP_COUNTER",0);
                     editor.putString("UNAME",name);
+                    editor.putInt("DP_CHANGE_COUNTER",0);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }

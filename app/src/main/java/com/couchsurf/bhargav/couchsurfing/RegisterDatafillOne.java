@@ -77,6 +77,7 @@ public class RegisterDatafillOne extends Fragment implements View.OnClickListene
                     DocumentSnapshot doc = task.getResult();
                     defCityName = doc.get(CITY_KEY).toString();
                     defStateName = doc.get(STATE_KEY).toString();
+                    defCountryName = doc.get(COUNTRY_KEY).toString();
                     defCity.setText(defCityName+",\n"+defStateName);
                 }
             }

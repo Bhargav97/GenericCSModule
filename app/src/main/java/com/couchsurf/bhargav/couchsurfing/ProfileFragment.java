@@ -88,6 +88,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private int counter = 0;
     final private String CUSTOM_DP_KEY = "CUSTOM_DP";
     final private String DESC_KEY = "DESC";
+    final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
     SharedPreferences sharedpreferences;
 
     private TextView nameTitle;
@@ -321,7 +322,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
                 //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey(sharedpreferences.getInt("DP_COUNTER",0)));
+                RequestOptions options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+1));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
@@ -355,13 +356,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICKFILE_RESULT_CODE && resultCode == Activity.RESULT_OK){
             Uri content_describer = data.getData();
-            int current = sharedpreferences.getInt("DP_COUNTER",0);
+            int current = sharedpreferences.getInt("DP_CHANGE_COUNTER",0);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putInt("DP_COUNTER",current+1);
+            editor.putInt("DP_CHANGE_COUNTER",current+1);
             editor.commit();
             imagePath = getRealPathFromURI(getActivity().getApplicationContext(),content_describer);
             DocumentReference updateDoc = db.collection("users").document(Uid);
             updateDoc.update(CUSTOM_DP_KEY,true);
+            updateDoc.update(DP_CHANGE_KEY,++current);
             uploadAndChangeDpWithTransferUtility(Uid,imagePath);
 
 

@@ -34,7 +34,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 w.setVisibility(View.VISIBLE);
                 w.animate().alpha(1.0f);
             }
-        }, 500);
+        }, delay);
     }
 
     public void setWelcomeText() {
@@ -48,6 +48,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 welcome.animate().alpha(1.0f);
             }
         }, 500);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        MainActivity.setTitleToHome();
+        MainActivity.setNavItem(R.id.navhome);
     }
 
     @Nullable
@@ -88,13 +95,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 //
                 break;
             case 1:
-                showViewWithAnim(300, regNewCouch);
-                showViewWithAnim(400, manageCouches);
+                showViewWithAnim(100, regNewCouch);
+                showViewWithAnim(900, manageCouches);
                 break;
             case 2:
-                showViewWithAnim(300, regNewCouch);
-                showViewWithAnim(400, manageCouches);
-                showViewWithAnim(500, adminPanel);
+                showViewWithAnim(100, regNewCouch);
+                showViewWithAnim(900, manageCouches);
+                showViewWithAnim(1700, adminPanel);
                 break;
         }
         return v;
@@ -108,7 +115,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), RegisterNewCouch.class));
                 break;
             case R.id.manageCouch:
-                //
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ManageCouches(),"MC").addToBackStack(null).commit();
                 break;
             case R.id.adminPanel:
                 //
