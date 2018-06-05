@@ -298,6 +298,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Glide.with(context).load(glink).apply(options).thumbnail(0.5f).into(userImage);
                 } else if(!link.trim().equals("")){
                     Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
+                    options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
+                    Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
                 }
                 else {
                     Glide.with(context).load(R.drawable.def_user_icon).thumbnail(0.5f).into(userImage);

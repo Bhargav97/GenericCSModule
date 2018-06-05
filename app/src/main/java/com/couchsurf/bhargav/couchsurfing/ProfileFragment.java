@@ -329,6 +329,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     Glide.with(getActivity().getBaseContext()).load(glink).apply(options).thumbnail(0.5f).into(profileImage);
                 } else if(!link.trim().equals("")){
                     Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
+                    options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
+                    Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
+
                 }
                 else {
                     Glide.with(getActivity().getBaseContext()).load(R.drawable.def_user_icon).thumbnail(0.5f).into(profileImage);
