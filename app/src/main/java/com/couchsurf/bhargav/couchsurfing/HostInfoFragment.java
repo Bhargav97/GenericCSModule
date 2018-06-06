@@ -48,6 +48,7 @@ public class HostInfoFragment extends Fragment {
     final private String CUSTOM_DP_KEY = "CUSTOM_DP";
     final private String DESC_KEY = "DESC";
     final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
+    final private String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -147,6 +148,7 @@ public class HostInfoFragment extends Fragment {
                     newUser.put(CUSTOM_DP_KEY,false);
                     newUser.put(DESC_KEY,"");
                     newUser.put(DP_CHANGE_KEY,0);
+                    newUser.put(COUCH_ID_COUNTER_KEY,0);
                     //Creating an empty couch subcollection first
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered

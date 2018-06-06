@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.signature.ObjectKey;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
 import com.squareup.picasso.Callback;
@@ -35,8 +37,8 @@ public class FullScreenImageView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-        Glide.with(getBaseContext()).load(currentImg).into(photoView);
+        RequestOptions options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+        Glide.with(getBaseContext()).load(currentImg).apply(options).into(photoView);
 
        /* Handler handler
         PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(photoView);

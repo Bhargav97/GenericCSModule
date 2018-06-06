@@ -32,7 +32,7 @@ public class TravellerInfoFragment extends Fragment {
     EditText phoneInput, addressInput, nameInput, cityInput, countryInput, stateInput, ageInput;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-
+    final private String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date";
     final private String PHONE_KEY = "Phone";
     final private String ADDRESS_KEY = "Address";
     final private String EMAIL_KEY = "Email";
@@ -145,6 +145,7 @@ public class TravellerInfoFragment extends Fragment {
                     newUser.put(CUSTOM_DP_KEY,false);
                     newUser.put(DESC_KEY,"");
                     newUser.put(DP_CHANGE_KEY,0);
+                    newUser.put(COUCH_ID_COUNTER_KEY,0);
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered
                     db = FirebaseFirestore.getInstance();

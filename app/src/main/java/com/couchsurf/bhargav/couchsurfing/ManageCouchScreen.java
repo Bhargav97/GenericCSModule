@@ -97,6 +97,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
     final private String TIME_ADDED_KEY = "Time_Of_Posting";
     final private String COUCH_PET_KEY = "Pets_Allowed";
     final private String COUCH_ADD_KEY = "Address_Of_Couch";
+    final private String COUCH_ID_KEY = "Couch_Id";
     View v;
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
@@ -107,6 +108,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
     final static private String COUCHFOLDER = "s3Folder/couchPics/"; //format- "s3Folder/couchPics/UID/CouchId(>0)/ImgId"
     final static private String EXT = ".jpg";
     ImageView current;
+    public int current_couch_id;
     public int current_couch_counter; //this represents successfully registered number of couches at the moment, it will be updated when this form is submitted
     public int current_couch_images_counter;
     ImageButton decrooms, incrooms, decadults, incadults;
@@ -192,7 +194,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
-
+                    current_couch_id = Integer.parseInt(doc.get(COUCH_ID_KEY).toString());
                     current_couch_images_counter = Integer.parseInt(doc.get(COUCH_IMAGES_COUNTER_KEY).toString());
                     // Toast.makeText(getActivity(),"got "+current_couch_images_counter,Toast.LENGTH_LONG).show();
                     nameCouch.setText(doc.get(COUCH_NAME_KEY).toString());
@@ -467,7 +469,8 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
         ImageView currentIV;
         RequestOptions options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
         for (int i = 0; i < current_couch_images_counter; i++) {
-            String link = INITURL + COUCHFOLDER + UID + "/" + Integer.toString(selected) + "/" + Integer.toString(i) + ".jpg";
+            Toast.makeText(getActivity(),"selected is" +current_couch_id,Toast.LENGTH_LONG).show();
+            String link = INITURL + COUCHFOLDER + UID + "/" + Integer.toString(current_couch_id) + "/" + Integer.toString(i) + ".jpg";
             switch (i) {
                 case 0:
                     currentIV = img1;
@@ -497,6 +500,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                     currentIV = null;
                     break;
             }
+            nameCouch.setText(link);
             // Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
             //nameCouch.setText(link);
             Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(currentIV);
@@ -739,7 +743,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
         int current = selected;
         //current=1
         //re = 2
-        Toast.makeText(getActivity(),"no of rearrange"+noOfRearrangements,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity(),"no of rearrange"+noOfRearrangements,Toast.LENGTH_LONG).show();
         for(int i = 0; i<noOfRearrangements; i++){
             int j = 0;
             while(Integer.parseInt(map[j].get("id").toString())!=current+1){

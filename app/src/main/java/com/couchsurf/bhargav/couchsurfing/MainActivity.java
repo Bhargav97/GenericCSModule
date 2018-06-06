@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,6 +46,8 @@ import com.bumptech.glide.annotation.GlideExtension;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -157,6 +160,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+        //show appropriate menu items
+        switch (USER_TYPE){
+            case 0:
+                hideItem(R.id.navmanage);
+                hideItem(R.id.navreq);
+                break;
+            case 1:
+               // hideItem(R.id.);
+                break;
+            case 2:
+                //
+                break;
+        }
+
         //Use you DB reference object and add this method to access realtime data
        /* databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -220,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ManageCouches(),"MC").addToBackStack(null).commit();
                 break;
             case R.id.navexplore:
-                //getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new DSFragment(),"DS").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ExploreFragment(),"EF").addToBackStack(null).commit();
                 break;
             case R.id.navfeedback:
                 Toast.makeText(this, "What's the hurry dude!!",
@@ -239,11 +256,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 FirebaseAuth.getInstance().signOut();
                 SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
                 editor.putBoolean("SIGNED_IN", false);
-
                 editor.commit();
-
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -289,31 +306,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static void updateNavProfilePic( final Context context){
         DocumentReference databaseReference = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid());
 
-        databaseReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        databaseReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot, @javax.annotation.Nullable FirebaseFirestoreException e) {
-                String glink = documentSnapshot.get("Photo_Uri").toString();
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                final DocumentSnapshot documentSnapshot = task.getResult();
+                final String glink = documentSnapshot.get("Photo_Uri").toString();
                 String UID = firebaseUser.getUid();
-                String link = ProfileFragment.getUrlFromAws(UID);
-                //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
-                if (!glink.trim().equals("") && !customDP) {
-                    //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
-                    Glide.with(context).load(glink).apply(options).thumbnail(0.5f).into(userImage);
-                } else if(!link.trim().equals("")){
-                    Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
-                   // options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
-                   // Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
-                }
-                else {
-                    Glide.with(context).load(R.drawable.def_user_icon).thumbnail(0.5f).into(userImage);
-                }
+                ProfileFragment.getUrlFromAws(UID);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String link =  ProfileFragment.url;
+                        //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
+                        boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
+                        if (!glink.trim().equals("") && !customDP) {
+                            //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
+                            Glide.with(context).load(glink).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
+                        } else if(!link.trim().equals("")){
+                            Glide.with(context).load(link).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
+                            // options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
+                            // Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
+                        }
+                        else {
+                            Glide.with(context).load(R.drawable.def_user_icon).thumbnail(0.5f).into(userImage);
+                        }
+                    }
+                },1000);
             }
-        });
+        }) ;
+
+
     }
 
-    public static int getDpChanegCounter(){
+    public static int getDpChangeCounter(){
          return sharedpreferences.getInt("DP_CHANGE_COUNTER",0);
+    }
+
+    private void hideItem(int id)
+    {
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(id).setVisible(false);
     }
 
 }

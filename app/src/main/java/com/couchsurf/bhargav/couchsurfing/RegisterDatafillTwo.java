@@ -84,7 +84,8 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     final private String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private String BOOKING_COUNTER_KEY = "No_Of_Bookings";
 
-
+    final private String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date"; //includes deleted
+    final private String COUCH_ID_KEY = "Couch_Id";
     final private String COUCH_IMAGES_COUNTER_KEY = "No_Of_Images";
     final private String COUCH_NAME_KEY = "Name";
     final private String NO_OF_ROOMS_KEY = "No_Of_Rooms";
@@ -96,6 +97,11 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     final private String COUCH_PET_KEY = "Pets_Allowed";
     final private String TIME_ADDED_KEY = "Time_Of_Posting";
     final private String COUCH_ADD_KEY = "Address_Of_Couch";
+    final private String COUCH_OWNER_UID_KEY = "Owner_Of_Couch_Is";
+    final private String COUCH_GLOBAL_ID_KEY = "Global_Couch_Id";
+
+    final private static String GLOBAL_COUCH_COUNTER = "global_couch_counter";
+
     View v;
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
@@ -105,6 +111,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     final static private String COUCHFOLDER = "s3Folder/couchPics/";
     final static private String EXT = ".jpg";
     ImageView current;
+    public int current_couch_id_counter;
     public int current_couch_counter; //this represents successfully registered number of couches at the moment, it will be updated when this form is submitted
     public int current_couch_images_counter = 0;
     ImageButton dec, inc, decadults, incadults;
@@ -120,7 +127,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     public static void pushData(String city, String state, String country){
         couchCity=city; couchState=state; couchCountry=country;
     }
-
+    public static int global_couch_counter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -167,7 +174,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     SharedPreferences.Editor editor = sharedpreferences.edit();
-
+                    current_couch_id_counter = Math.round((Long) doc.get(COUCH_ID_COUNTER_KEY));
                     current_couch_counter = Math.round((Long) doc.get(COUCHCOUNTER_KEY));
                     //Toast.makeText(getActivity(),Integer.toString(current_couch_counter),Toast.LENGTH_LONG).show();
                     editor.putInt(COUCHCOUNTER_KEY, current_couch_counter);
@@ -175,6 +182,15 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                 }
             }
         });
+
+        db.collection("metadata").document("couch").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        global_couch_counter = Integer.parseInt(documentSnapshot.get(GLOBAL_COUCH_COUNTER).toString());
+                    }
+                });
         /*DocumentReference newCouchReference = FirebaseFirestore.getInstance().collection("users").document(UID).collection("couches").document(Integer.toString(current_couch_counter + 1));
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put(COUCH_IMAGES_COUNTER_KEY, 0);
@@ -232,7 +248,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
 
         String couchName = nameCouch.getText().toString();
         String couchDesc = descCouch.getText().toString();
-        String couchAdd = addressCouch.getText().toString();
+        final String couchAdd = addressCouch.getText().toString();
         int rooms = Integer.parseInt(roomNumber.getText().toString());
         int adults = Integer.parseInt(adultNumber.getText().toString());
         Date currentTime = Calendar.getInstance().getTime();
@@ -248,7 +264,10 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
         hashMap.put(COUCH_ADD_KEY,couchAdd);
         hashMap.put(COUCH_COUNTRY_KEY,couchCountry);
         hashMap.put(COUCH_PET_KEY,pet);
+        hashMap.put(COUCH_ID_KEY,(current_couch_id_counter+1));
         hashMap.put(COUCH_IMAGES_COUNTER_KEY, current_couch_images_counter);
+        hashMap.put(COUCH_OWNER_UID_KEY, UID);
+        hashMap.put(COUCH_GLOBAL_ID_KEY,(global_couch_counter+1));
         db.collection("users").document(UID).collection("couches").document(Integer.toString(current_couch_counter + 1)).set(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -265,7 +284,14 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
             }
         });
 
+
+
+        global_couch_counter++;
         current_couch_counter++;
+        current_couch_id_counter++;
+
+        db.collection("metadata").document("couch").update(GLOBAL_COUCH_COUNTER,global_couch_counter);
+
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putInt(COUCHCOUNTER_KEY,current_couch_counter);
         editor.commit();
@@ -278,6 +304,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                             Map<String, Object> map;
                             map = doc.getData();
                             map.put(COUCHCOUNTER_KEY, current_couch_counter);
+                            map.put(COUCH_ID_COUNTER_KEY, current_couch_id_counter);
                             db.collection("users").document(UID).set(map)
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -287,7 +314,6 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                                             Log.d("TAG", e.toString());
                                         }
                                     });
-                            ;
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -319,7 +345,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                     public void run() {
                         startActivity(new Intent(getActivity(), MainActivity.class));
                     }
-                }, 2000);
+                }, 3000);
                 break;
 
             case R.id.decRooms:
@@ -473,7 +499,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
         //Toast.makeText(getActivity(), filepath, Toast.LENGTH_LONG).show();
         TransferObserver uploadObserver =
                 transferUtility.upload(
-                        COUCHFOLDER + UID + "/" + (current_couch_counter + 1) + "/" + current_couch_images_counter + EXT,
+                        COUCHFOLDER + UID + "/" + (current_couch_id_counter + 1) + "/" + current_couch_images_counter + EXT,
                         new File(filepath));
 
         // Attach a listener to the observer to get state update and progress notifications

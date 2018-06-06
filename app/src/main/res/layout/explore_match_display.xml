@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ProgressBar
+        android:visibility="visible"
+        android:layout_marginTop="240dp"
+        android:indeterminate="true"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/marker_progressExplore"
+        style="?android:attr/progressBarStyle"
+        android:layout_gravity="center_vertical|center_horizontal"/>
+    <TextView
+        android:id="@+id/noCouchTextViewExplore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="Please wait while loading..."
+        android:textColor="@color/black_overlay"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ed_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</LinearLayout>

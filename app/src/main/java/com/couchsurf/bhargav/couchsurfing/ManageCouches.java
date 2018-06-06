@@ -163,7 +163,8 @@ public class ManageCouches extends Fragment {
                         handler2.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                tryToPopulateRV(getActivity());
+                                if(getActivity()!=null)
+                                    tryToPopulateRV(getActivity());
                             }
                         },4000);
                     }
