@@ -38,6 +38,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -90,7 +91,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     final private String DESC_KEY = "DESC";
     final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
     SharedPreferences sharedpreferences;
-
+    RequestOptions options;
     private TextView nameTitle;
     private Button typeTitle;
 
@@ -219,6 +220,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
             }
         });
+       // Toast.makeText(getActivity(), "sp dp counter is"+MainActivity.getDpChanegCounter(),Toast.LENGTH_LONG).show();
+        options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+
         //Initializations
         nameTitle = v.findViewById(R.id.nameTitle);
         typeTitle = v.findViewById(R.id.typeTitle);
@@ -321,16 +325,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 String glink = documentSnapshot.get("Photo_Uri").toString();
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
-                //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+1));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
                     Glide.with(getActivity().getBaseContext()).load(glink).apply(options).thumbnail(0.5f).into(profileImage);
                 } else if(!link.trim().equals("")){
                     Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
-                    options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
-                    Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
+                    //options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
+                   // Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
 
                 }
                 else {

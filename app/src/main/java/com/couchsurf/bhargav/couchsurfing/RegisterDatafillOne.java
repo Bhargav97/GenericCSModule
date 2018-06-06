@@ -129,7 +129,7 @@ public class RegisterDatafillOne extends Fragment implements View.OnClickListene
                     alertDialog.setNegativeButton("CANCEL",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(getActivity(),"I was clicked",Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getActivity(),"I was clicked",Toast.LENGTH_LONG).show();
 
                                     dialog.cancel();
                                 }

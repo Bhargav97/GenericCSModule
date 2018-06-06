@@ -122,7 +122,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
     String url1, url2, url3, url4, url5, url6;
     ImageButton nameEditButton, nameDoneButton, addEditButton, addDoneButton, descEditButton, descDoneButton;
     public boolean img1clicked = false, img2clicked = false, img3clicked = false, img4clicked = false, img5clicked = false, img6clicked = false;
-
+    Map<String, Object>[] reAssignMap;int mapcounter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -209,7 +209,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                         radioPetButton.setChecked(true);
                     }
                     String city = doc.get(COUCH_CITY_KEY).toString() + ", " + doc.get(COUCH_STATE_KEY) + ", " + doc.get(COUCH_COUNTRY_KEY).toString();
-                    Toast.makeText(getActivity(), city, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), city, Toast.LENGTH_LONG).show();
                     cityAndState.setText(city);
                 }
             }
@@ -355,10 +355,12 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                 nameCouch.setInputType(InputType.TYPE_CLASS_TEXT);
                 break;
             case R.id.descEditButton:
-                descCouch.setInputType(InputType.TYPE_CLASS_TEXT);
+                descCouch.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                descCouch.setLines(8);
                 break;
             case R.id.addEditButton:
-                addressCouch.setInputType(InputType.TYPE_CLASS_TEXT);
+                addressCouch.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                addressCouch.setLines(4);
                 break;
             case R.id.nameDoneButton:
                 nameCouch.setInputType(InputType.TYPE_NULL);
@@ -393,7 +395,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                     public void run() {
                         getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
                     }
-                }, 2000);
+                }, 6000);
                 break;
             case R.id.nameEditButtonReview:
                 nameCouch.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -673,52 +675,80 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
 
     public void deleteThisCouch() {
         progressBar.setVisibility(View.VISIBLE);
-        if (current_couch_counter == 1 ) {
+        db = FirebaseFirestore.getInstance();
+        if (current_couch_counter == 1) {
+            Toast.makeText(getActivity(), "Asexpcted, IF", Toast.LENGTH_LONG).show();
+
             db.collection("users").document(UID).collection("couches").document(Integer.toString(1)).delete();
-            db.collection("users").document(UID).update(COUCHCOUNTER_KEY,0);
+            db.collection("users").document(UID).update(COUCHCOUNTER_KEY, 0);
 
-        }
-        else if (selected == current_couch_counter){
+        } else if (selected == current_couch_counter) {
+            Toast.makeText(getActivity(), "Asexpcted, ELSE IF", Toast.LENGTH_LONG).show();
             db.collection("users").document(UID).collection("couches").document(Integer.toString(current_couch_counter)).delete();
-            db.collection("users").document(UID).update(COUCHCOUNTER_KEY,--current_couch_counter);
+            db.collection("users").document(UID).update(COUCHCOUNTER_KEY, --current_couch_counter);
 
-        }
-        else {
-            Toast.makeText(getActivity(), "selected is" + selected, Toast.LENGTH_LONG).show();
-            Toast.makeText(getActivity(), "cc is" + current_couch_counter, Toast.LENGTH_LONG).show();
+        } else {
+
+            reAssignMap = new Map[current_couch_counter-selected];
+            mapcounter = 0;
+            //Toast.makeText(getActivity(), "selected is" + selected, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "cc is" + current_couch_counter, Toast.LENGTH_LONG).show();
             for (i = selected + 1; i <= current_couch_counter; i++) {
-                if (i == current_couch_counter) {
-                    db.collection("users").document(UID).collection("couches").document(Integer.toString(i)).delete();
-                    db.collection("users").document(UID).update(COUCHCOUNTER_KEY, --current_couch_counter);
-                }
-                else {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            db.collection("users").document(UID).collection("couches").document(Integer.toString(i)).get()
-                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot doc = task.getResult();
-                                                Map m = doc.getData();
-                                                setThisDocument(m, i - 1);
-                                                //Toast.makeText(getActivity(),"cc is"+current_couch_counter,Toast.LENGTH_LONG).show();
-                                            }
+
+                db.collection("users").document(UID).collection("couches").document(Integer.toString(i)).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot doc = task.getResult();
+
+                                    reAssignMap[mapcounter] = doc.getData();
+                                    reAssignMap[mapcounter].put("id",doc.getId());
+                                    mapcounter++;
+                                    //Toast.makeText(getActivity(),"cc is"+current_couch_counter,Toast.LENGTH_LONG).show();
+                                }
 
 
-                                        }
-                                    });
-                        }
-                    }, 1000);
-                }
+                            }
+                        });
+
 
             }
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    db.collection("users").document(UID).collection("couches").document(Integer.toString(i - 1)).delete();
+                    db.collection("users").document(UID).update(COUCHCOUNTER_KEY, current_couch_counter-1);
+                }
+            }, 4000);
+            Handler handler2 = new Handler();
+            handler2.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    reAssignDocuments(reAssignMap, current_couch_counter-selected);
+                }
+            }, 6000);
+
+
+
         }
     }
-
-    public void setThisDocument(Map<String, Object> map, int id) {
-        db.collection("users").document(UID).collection("couches").document(Integer.toString(id)).set(map);
+    //What we are doing is....IF we are deleting couch at id=2 (selected=2) then we move the couch at id=3 to id=2 and so on until we reach the couch with id=current_couch_counter and then we delete that last couch....just like a bubble sort
+    public void reAssignDocuments(Map<String, Object>[] map, int noOfRearrangements) {
+        int current = selected;
+        //current=1
+        //re = 2
+        Toast.makeText(getActivity(),"no of rearrange"+noOfRearrangements,Toast.LENGTH_LONG).show();
+        for(int i = 0; i<noOfRearrangements; i++){
+            int j = 0;
+            while(Integer.parseInt(map[j].get("id").toString())!=current+1){
+                if(j<noOfRearrangements) {
+                    j++;
+                }
+            }
+            db.collection("users").document(UID).collection("couches").document(Integer.toString(current)).set(map[j]);
+            current++;
+        }
     }
 }

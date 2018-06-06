@@ -96,12 +96,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case 1:
                 showViewWithAnim(100, regNewCouch);
-                showViewWithAnim(900, manageCouches);
+                showViewWithAnim(800, manageCouches);
                 break;
             case 2:
                 showViewWithAnim(100, regNewCouch);
-                showViewWithAnim(900, manageCouches);
-                showViewWithAnim(1700, adminPanel);
+                showViewWithAnim(600, manageCouches);
+                showViewWithAnim(1100, adminPanel);
                 break;
         }
         return v;

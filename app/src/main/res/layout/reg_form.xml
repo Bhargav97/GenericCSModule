@@ -548,6 +548,7 @@
         </android.support.v7.widget.CardView>
 
         <Button
+            android:layout_marginBottom="25dp"
             android:id="@+id/submitButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"

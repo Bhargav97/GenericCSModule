@@ -26,7 +26,7 @@ public class FullScreenImageView extends AppCompatActivity {
 
         PhotoView photoView = findViewById(R.id.imgNew);
         currentImg = getIntent().getStringExtra("CURRENT_IMG");
-        Toast.makeText(this, currentImg,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, currentImg,Toast.LENGTH_LONG).show();
 
         toolbar = findViewById(R.id.toolbarImageView);
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));

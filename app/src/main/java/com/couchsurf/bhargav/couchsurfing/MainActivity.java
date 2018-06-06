@@ -42,6 +42,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideExtension;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     static NavigationView navigationView;
     Button b;
+    static RequestOptions options;
     ActionBarDrawerToggle toggle;
     static public int USER_TYPE;
     static public String UID;
@@ -124,6 +126,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(MainActivity.this, "Error retrieving UID",Toast.LENGTH_LONG).show();
         else
             UID = sharedpreferences.getString("UID","");
+        options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
+
         //Initializing firebase objects
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
@@ -150,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final SharedPreferences.Editor editor = sharedpreferences.edit();
 
                 updateNavProfilePic(getBaseContext());
+
             }
         });
         //Use you DB reference object and add this method to access realtime data
@@ -291,21 +296,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String UID = firebaseUser.getUid();
                 String link = ProfileFragment.getUrlFromAws(UID);
                 //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
-                RequestOptions options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+1));
                 boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                 if (!glink.trim().equals("") && !customDP) {
                     //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
                     Glide.with(context).load(glink).apply(options).thumbnail(0.5f).into(userImage);
                 } else if(!link.trim().equals("")){
                     Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
-                    options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
-                    Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
+                   // options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
+                   // Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
                 }
                 else {
                     Glide.with(context).load(R.drawable.def_user_icon).thumbnail(0.5f).into(userImage);
                 }
             }
         });
+    }
+
+    public static int getDpChanegCounter(){
+         return sharedpreferences.getInt("DP_CHANGE_COUNTER",0);
     }
 
 }

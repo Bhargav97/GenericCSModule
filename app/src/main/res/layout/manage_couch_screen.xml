@@ -659,6 +659,7 @@
         </android.support.v7.widget.CardView>
 
         <LinearLayout
+            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -689,6 +690,7 @@
                 android:paddingTop="20dp"
                 android:text="DELETE COUCH" />
             <ProgressBar
+                android:layout_marginRight="10dp"
                 android:visibility="gone"
                 android:indeterminate="true"
                 android:layout_width="20dp"

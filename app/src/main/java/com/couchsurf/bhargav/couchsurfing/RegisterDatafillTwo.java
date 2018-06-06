@@ -169,7 +169,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                     SharedPreferences.Editor editor = sharedpreferences.edit();
 
                     current_couch_counter = Math.round((Long) doc.get(COUCHCOUNTER_KEY));
-                    Toast.makeText(getActivity(),Integer.toString(current_couch_counter),Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(),Integer.toString(current_couch_counter),Toast.LENGTH_LONG).show();
                     editor.putInt(COUCHCOUNTER_KEY, current_couch_counter);
                     editor.commit();
                 }
@@ -253,8 +253,8 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(), "Data successfully submitted",
-                                Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getActivity(), "Data successfully submitted",
+                               // Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
