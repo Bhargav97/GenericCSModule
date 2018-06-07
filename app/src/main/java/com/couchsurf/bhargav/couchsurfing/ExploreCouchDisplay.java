@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -92,14 +93,14 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     ScrollView mainLayout;
     public int selected;
     String imageFilePath;
-    TextView cityAndState, timePosted;
+    TextView cityAndState, timePosted, noImgText;
     String url1, url2, url3, url4, url5, url6;
-
+    GridLayout imgGrid;
     public static ArrayList<Map> currentMap;
     public static String currentUid;
     public static String currentHostUrl;
     public static String currentHostName;
-
+    public static String currentGcid;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -123,10 +124,15 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         timePosted = v.findViewById(R.id.timePostedExplore);
         hostName = v.findViewById(R.id.nameOfHost);
         hostPic = v.findViewById(R.id.couchOwnerPicECD);
+        imgGrid = v.findViewById(R.id.imgGrid);
+        noImgText = v.findViewById(R.id.noImageText);
 
         currentMap = getterSetterForExploreDisplay.getMapForMatchedCouch();
         currentHostUrl = getterSetterForExploreDisplay.getUid();
         currentUid = getUidFromUrl(currentHostUrl);
+        currentGcid = getterSetterForExploreDisplay.getGcid();
+        Glide.with(getContext()).load(currentHostUrl).into(hostPic);
+        //Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
 
         //PERMISSION CHECK
         PermissionUtil permissionUtil = new PermissionUtil();
@@ -151,18 +157,17 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot documentSnapshot = task.getResult();
                         currentHostName = documentSnapshot.get(NAME_KEY).toString();
-                        Toast.makeText(getActivity(),currentHostName,Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(),currentHostName,Toast.LENGTH_LONG).show();
                     }
                 });
 
-        Glide.with(getContext()).load(currentHostUrl).into(hostPic);
+
 
         //Lets figure out the map for current
-        Toast.makeText(getActivity(), "size is"+currentMap.size(), Toast.LENGTH_LONG).show();
 
         Map<String, Object> thisMap=null;
         for (int i = 0; i < currentMap.size(); i++) {
-            if (currentMap.get(i).get(COUCH_OWNER_UID_KEY).toString().trim().equals(currentUid.trim())) {
+            if (currentMap.get(i).get(COUCH_GLOBAL_ID_KEY).toString().trim().equals(currentGcid.trim())) {
                 thisMap = currentMap.get(i);
                 break;
             }
@@ -173,6 +178,11 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         int numOfImages = Integer.parseInt(thisMap.get(COUCH_IMAGES_COUNTER_KEY).toString().trim());
         urls = buildImgUrlsFromCouchId(couchId, numOfImages);
         //set images
+
+        if(numOfImages==0){
+            noImgText.setVisibility(View.VISIBLE);
+            imgGrid.setVisibility(View.GONE);
+        }
         for (int i = 0; i < numOfImages; i++) {
             ImageView currentIV = null;
             switch (i) {
@@ -195,7 +205,28 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                     currentIV = img6;
                     break;
             }
+           // Toast.makeText(getActivity(), "we got"+urls[i], Toast.LENGTH_SHORT).show();
             Glide.with(getActivity().getBaseContext()).load(urls[i]).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).into(currentIV);
+        }
+        for(int i = 0; i<6-numOfImages; i++){
+
+            switch (i) {
+                case 0:
+                    img6.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    img5.setVisibility(View.GONE);
+                    break;
+                case 2:
+                    img4.setVisibility(View.GONE);
+                    break;
+                case 3:
+                    img3.setVisibility(View.GONE);
+                    break;
+                case 4:
+                    img2.setVisibility(View.GONE);
+                    break;
+            }
         }
         nameCouch.setText(thisMap.get(COUCH_NAME_KEY).toString());
         descCouch.setText(thisMap.get(COUCH_DESC_KEY).toString());

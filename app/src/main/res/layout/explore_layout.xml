@@ -9,14 +9,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/expFragContainerImage"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/shadowhack" />
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/expFragContainerInfo"/>
 
 </LinearLayout>

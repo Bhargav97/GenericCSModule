@@ -38,7 +38,7 @@ public class FullScreenImageView extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         RequestOptions options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
-        Glide.with(getBaseContext()).load(currentImg).apply(options).into(photoView);
+        Glide.with(getBaseContext()).load(currentImg).into(photoView);
 
        /* Handler handler
         PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(photoView);

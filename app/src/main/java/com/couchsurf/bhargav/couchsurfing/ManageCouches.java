@@ -1,6 +1,7 @@
 package com.couchsurf.bhargav.couchsurfing;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,15 +9,20 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +71,8 @@ public class ManageCouches extends Fragment {
     static List<RVManageCouch> alignedList;
     public static int selectedCouch;
     public static ProgressBar markerProg;
+    public static Button delAll;
+    public static NestedScrollView mainLayout;
     public static List<RVManageCouch> getData(final Activity act) {
         dataList = new ArrayList<>();
         nameData = new String[couchcounter];
@@ -101,6 +109,9 @@ public class ManageCouches extends Fragment {
         ((MainActivity) getActivity()).setNavItem(R.id.navmanage);
         noCouchTV = v.findViewById(R.id.noCouchTextView);
         markerProg = v.findViewById(R.id.marker_progress);
+        delAll = v.findViewById(R.id.deleteAll);
+        delAll.setVisibility(View.GONE);
+        mainLayout = v.findViewById(R.id.mainLayoutMC);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -120,6 +131,7 @@ public class ManageCouches extends Fragment {
                     if (couchcounter > 0) {
                         markerProg.setVisibility(View.VISIBLE);
                         noCouchTV.setText("Please wait while loading...");
+
                         recyclerView = (RecyclerView) v.findViewById(R.id.mc_rv);
                         LinearLayoutManager llm = new LinearLayoutManager(recyclerView.getContext());
                        // llm.setReverseLayout(true);
@@ -128,7 +140,8 @@ public class ManageCouches extends Fragment {
                                 llm.getOrientation());
                         recyclerView.addItemDecoration(dividerItemDecoration);
                         recyclerView.setLayoutManager(llm);
-
+                      //  recyclerView.setHasFixedSize(true);
+                        recyclerView.setNestedScrollingEnabled(false);
                         //recyclerView.setNestedScrollingEnabled(false);
                         //Understand this code
                         listener = new RecyclerViewClickListener() {
@@ -172,6 +185,24 @@ public class ManageCouches extends Fragment {
             }
         });
 
+        delAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 1; i<=couchcounter; i++) {
+                    db.collection("users").document(UID).collection("couches").document(Integer.toString(i)).delete();
+                    db.collection("users").document(UID).update(COUCHCOUNTER_KEY,0);
+                }
+                Snackbar snackbar = Snackbar.make(mainLayout, "All your Couches have been deleted", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(getActivity(), MainActivity.class));
+                    }
+                }, 3000);
+            }
+        });
 
         return v;
     }
@@ -181,6 +212,7 @@ public class ManageCouches extends Fragment {
         markerProg.setVisibility(View.GONE);
         rvAdapter = new RVMCAdapter(activity, alignedList, listener);
         recyclerView.setAdapter(rvAdapter);
+        delAll.setVisibility(View.VISIBLE);
 
     }
 

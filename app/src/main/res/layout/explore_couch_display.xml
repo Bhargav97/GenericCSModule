@@ -54,6 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:gravity="center"
+                    android:textAllCaps="true"
                     android:layout_weight="1"
                     android:text=""
                     android:textColor="@color/black"
@@ -73,11 +75,13 @@
                 <TextView
                     android:id="@+id/descOfCouch"
                     android:layout_width="match_parent"
+                    android:padding="10dp"
+                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text=""
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -157,8 +161,17 @@
                     android:text="Here are some images of this place"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:visibility="gone"
+                    android:id="@+id/noImageText"
+                    android:text="No images uploaded by the host"
+                    android:textColor="@color/black_overlay"
+                    android:textSize="15sp" />
                 <GridLayout
+                    android:id="@+id/imgGrid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:columnCount="1"
@@ -301,7 +314,7 @@
 
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Number of Rooms available"
@@ -310,16 +323,18 @@
 
                     <TextView
                         android:id="@+id/roomNumberExplore"
-                        android:layout_width="50dp"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
                         android:text=""
+                        android:layout_gravity="center_vertical"
+
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="30sp"
+                        android:textStyle="bold"/>
 
                 </LinearLayout>
 
@@ -331,16 +346,17 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
-                        android:text="Max Number of adults per room"
+                        android:text="Number of adults per room"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/adultNumberExplore"
                         android:layout_width="0dp"
+                        android:textStyle="bold"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
@@ -349,7 +365,7 @@
                         android:text=""
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="30sp" />
                 </LinearLayout>
 
                 <View
@@ -365,7 +381,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:text="Max Accomodation"
@@ -375,6 +391,8 @@
                     <TextView
                         android:id="@+id/accomoExplore"
                         android:layout_width="0dp"
+                        android:textStyle="bold"
+
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
@@ -383,7 +401,7 @@
                         android:text=""
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="30sp" />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>

@@ -33,7 +33,7 @@ public class ExploreFragment extends Fragment{
 
         ((MainActivity) getActivity()).setActionBarTitle("Explore");
         ((MainActivity) getActivity()).setNavItem(R.id.navexplore);
-        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerImage, new ExpFragImageOne(),"EFIO1").commit();
+        //getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerImage, new ExpFragImageOne(),"EFIO1").commit();
         getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerInfo, new ExpFragOneInfo(),"EFINFO1").commit();
 
 

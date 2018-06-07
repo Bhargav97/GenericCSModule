@@ -82,7 +82,7 @@ public class ExpFragOneInfo extends Fragment implements View.OnClickListener {
         defCityCard.setOnClickListener(this);
         newCityCard.setOnClickListener(this);
         defCitySub.setOnClickListener(this);
-
+        submitNewCity.setOnClickListener(this);
         return v;
     }
 
@@ -92,7 +92,7 @@ public class ExpFragOneInfo extends Fragment implements View.OnClickListener {
         switch (id) {
             case R.id.defaultLocCardExp:
                 getterSetterForExploreDisplay.setCity(defCityName);
-                getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerInfo, new ExploreMatchDisplay(),"EMD").commit();
                 break;
             case R.id.addNewLocationCardExp:
@@ -112,15 +112,13 @@ public class ExpFragOneInfo extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.submitCityExp:
-                getterSetterForExploreDisplay.setCity(newCity.getText().toString());
-                getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
-                getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFINFO1")).commit();
-
+                getterSetterForExploreDisplay.setCity(newCityET.getText().toString());
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerInfo, new ExploreMatchDisplay(),"EMD").commit();
                 break;
             case R.id.defCitySubstitute:
                 getterSetterForExploreDisplay.setCity(defCityName);
-                getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
+                //getActivity().getSupportFragmentManager().beginTransaction().remove(getActivity().getSupportFragmentManager().findFragmentByTag("EFIO1")).commit();
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerInfo, new ExploreMatchDisplay(),"EMD").commit();
                 break;
         }

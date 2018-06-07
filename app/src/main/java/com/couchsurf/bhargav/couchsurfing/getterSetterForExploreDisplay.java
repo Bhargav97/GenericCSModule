@@ -6,6 +6,7 @@ import java.util.Map;
 public class getterSetterForExploreDisplay {
 
     public static String city;
+    public static String gcid;
     public static ArrayList<Map> mapForMatchedCouch;
     public static String UID;
     public static void setCity(String c){
@@ -15,6 +16,15 @@ public class getterSetterForExploreDisplay {
     public static String getCity() {
         return city;
     }
+
+    public static void setGcid(String c){
+        gcid = c;
+    }
+
+    public static String getGcid() {
+        return gcid;
+    }
+
 
     public static void setMap(ArrayList m){
         mapForMatchedCouch = m;

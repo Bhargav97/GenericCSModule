@@ -195,6 +195,8 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult();
                     current_couch_id = Integer.parseInt(doc.get(COUCH_ID_KEY).toString());
+                   // Toast.makeText(getActivity(),"se is"+current_couch_id,Toast.LENGTH_LONG).show();
+
                     current_couch_images_counter = Integer.parseInt(doc.get(COUCH_IMAGES_COUNTER_KEY).toString());
                     // Toast.makeText(getActivity(),"got "+current_couch_images_counter,Toast.LENGTH_LONG).show();
                     nameCouch.setText(doc.get(COUCH_NAME_KEY).toString());
@@ -500,10 +502,10 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                     currentIV = null;
                     break;
             }
-            nameCouch.setText(link);
+           // nameCouch.setText(link);
             // Toast.makeText(getActivity(), link, Toast.LENGTH_LONG).show();
             //nameCouch.setText(link);
-            Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(currentIV);
+            Glide.with(getActivity().getBaseContext()).load(link).thumbnail(0.5f).into(currentIV);
 
         }
     }
@@ -613,11 +615,11 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
                         .awsConfiguration(AWSMobileClient.getInstance().getConfiguration())
                         .s3Client(s3Client)
                         .build();
-        int couchcounter = sharedpreferences.getInt(COUCHCOUNTER_KEY, 0);
-        //Toast.makeText(getActivity(), filepath, Toast.LENGTH_LONG).show();
+       // int couchcounter = sharedpreferences.getInt(COUCHCOUNTER_KEY, 0);
+        //Toast.makeText(getActivity(), COUCHFOLDER + UID + "/" + selected + "/" + current_couch_images_counter + EXT, Toast.LENGTH_LONG).show();
         TransferObserver uploadObserver =
                 transferUtility.upload(
-                        COUCHFOLDER + UID + "/" + (selected) + "/" + current_couch_images_counter + EXT,
+                        COUCHFOLDER + UID + "/" + current_couch_id + "/" + current_couch_images_counter + EXT,
                         new File(filepath));
 
         // Attach a listener to the observer to get state update and progress notifications
@@ -675,6 +677,7 @@ public class ManageCouchScreen extends Fragment implements View.OnClickListener 
         documentReference.update(NO_OF_ADULTS_KEY, adults);
         documentReference.update(NO_OF_ROOMS_KEY, rooms);
         documentReference.update(COUCH_PET_KEY, pet);
+        documentReference.update(COUCH_IMAGES_COUNTER_KEY,current_couch_images_counter);
     }
 
     public void deleteThisCouch() {

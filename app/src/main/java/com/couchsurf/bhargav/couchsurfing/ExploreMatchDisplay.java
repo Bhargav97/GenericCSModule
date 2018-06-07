@@ -75,11 +75,12 @@ public class ExploreMatchDisplay extends Fragment {
     private static final String SECRET = "hQ7ntoDPM/5UX7A63smQtXfE+E1DYRm9THlSYfDG";
     private static final String BUCKET_NAME = "couchsurfing-userfiles-mobilehub-151528593";
     static DocumentReference databaseReference;
-    public static int numberOfMatchedCouch = 0;
+    public static int numberOfMatchedCouch;
     public static ArrayList<Map<String, Object>> mapOfMatchedCouch;
     public static ProgressBar markerProg;
 
     public static void getData(final Activity act, final String city) {
+        numberOfMatchedCouch =0;
         dataList = new ArrayList<>();
         nameData = new ArrayList<>();
         vacData = new ArrayList<>();
@@ -130,7 +131,7 @@ public class ExploreMatchDisplay extends Fragment {
 
                 }
             }
-        }, 4000);
+        }, 2000);
 
 
         Handler handler1 = new Handler();
@@ -146,7 +147,7 @@ public class ExploreMatchDisplay extends Fragment {
                     dataList.add(rvExploreDisplay);
                 }
             }
-        }, 8000);
+        }, 4000);
         //return dataList;
     }
 
@@ -177,6 +178,7 @@ public class ExploreMatchDisplay extends Fragment {
             public void run() {
                 if (numberOfMatchedCouch == 0) {
                     noCouchTV.setText("No Couch are available at this location currently");
+                    markerProgress.setVisibility(View.GONE);
                 } else {
                     LinearLayoutManager llm = new LinearLayoutManager(recyclerView.getContext());
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -187,9 +189,11 @@ public class ExploreMatchDisplay extends Fragment {
                         @Override
                         public void onClick(View view, int position) {
                             String uidItem = (String) rvAdapter.data.get(position).url;
+                            String gcidItem = (String) rvAdapter.data.get(position).global_cid;
                             //Toast.makeText(getActivity(),selectedNameItem,Toast.LENGTH_SHORT).show();
                             Toast.makeText(getActivity(),uidItem,Toast.LENGTH_LONG).show();
                             getterSetterForExploreDisplay.setUid(uidItem);
+                            getterSetterForExploreDisplay.setGcid(gcidItem);
                             getterSetterForExploreDisplay.setMap(mapOfMatchedCouch);
                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.expFragContainerInfo, new ExploreCouchDisplay(), "EXPLORE_COUCH_DISPLAY").addToBackStack(null).commit();
                         }
@@ -198,7 +202,7 @@ public class ExploreMatchDisplay extends Fragment {
                 }
 
             }
-        }, 10000);
+        }, 5000);
 
 
         // llm.setReverseLayout(true);
