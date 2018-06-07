@@ -1,5 +1,7 @@
 package com.couchsurf.bhargav.couchsurfing;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,20 +9,29 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +46,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -76,6 +91,21 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     final private String COUCH_ID_KEY = "Couch_Id";
     final private String COUCH_OWNER_UID_KEY = "Owner_Of_Couch_Is";
     final private String COUCH_GLOBAL_ID_KEY = "Global_Couch_Id";
+
+
+    final public String REQUEST_GLOBAL_COUNTER_KEY = "Global_Request_Counter";
+    final public String REQUEST_GUEST_ID_KEY = "Requested_By";
+    final public String REQUEST_GLOBAL_ID_KEY = "Global_Request_Id";
+    final public String REQUEST_ACC_KEY = "Accommodation_Requested_For";
+    final public String REQUEST_STARTDATE_KEY = "Arrival_Of_Guests_On";
+    final public String REQUEST_ENDDATE_KEY = "Guests_Leave_On";
+
+    final public String GUEST_NAME_KEY = "Name_Of_Guest";
+    final public String GUEST_GENDER_KEY = "Gender_Of_Guest";
+    final public String GUEST_AGE_KEY = "Age_Of_Guest";
+
+
+
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
@@ -86,14 +116,14 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     final static private String EXT = ".jpg";
     ImageView current;
     ImageButton decrooms, incrooms, decadults, incadults;
-    TextView roomNumber, adultNumber, loc, accTotal, petsPref, nameCouch, descCouch, hostName;
+    TextView roomNumber, adultNumber, loc, accTotal, petsPref, nameCouch, descCouch, hostName, fancyText, adultNumAcc;
     String urls[];
     CircleImageView hostPic;
     Button submitButton, deleteButton;
     ScrollView mainLayout;
     public int selected;
     String imageFilePath;
-    TextView cityAndState, timePosted, noImgText;
+    TextView cityAndState, timePosted, noImgText, accText;
     String url1, url2, url3, url4, url5, url6;
     GridLayout imgGrid;
     public static ArrayList<Map> currentMap;
@@ -101,11 +131,93 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     public static String currentHostUrl;
     public static String currentHostName;
     public static String currentGcid;
+    CardView dateCard, accCard, dataFillCard;
+    Button reqButton, submitAcc;
+    Calendar calendarFrom, calendarTo;
+    static EditText fromDate;
+    static EditText toDate;
+    DatePickerDialog.OnDateSetListener dateFromListener, dateToListener;
+    int current_global_req_counter;
+    Map<String, Object> thisMap;
+    ImageButton decAdults, incAdults;
+    static LinearLayout dynamicLL;
+    static ArrayList<EditText> nameArray;
+    static ArrayList<EditText> ageArray;
+    static ArrayList<Spinner> genderArray;
+    public static String[] genders = {"Male", "Female", "Non-binary"};
+    static int noOfGuests, maxAcc;
+    static boolean guestDetailsClicked = false;
+
+    public static void generateAndPutLL(int i, Context context, LinearLayout ll) {
+        nameArray = new ArrayList<>();
+        ageArray = new ArrayList<>();
+        genderArray = new ArrayList<>();
+        for (int j = 0; j < i; j++) {
+
+            TextView tv = new TextView(context);
+            LinearLayout.LayoutParams paramstv = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            paramstv.setMargins(30, 10, 30, 10);
+            tv.setLayoutParams(paramstv);
+            tv.setText("Details of Guest #" + (j + 1));
+            tv.setTextColor(context.getResources().getColor(R.color.black_overlay));
+
+
+            LinearLayout parent = new LinearLayout(context);
+            parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            parent.setOrientation(LinearLayout.VERTICAL);
+            ll.addView(tv);
+            ll.addView(parent);
+            //children of parent linearlayout
+
+            EditText nameText = new EditText(context);
+            nameText.setHint("Name");
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(30, 10, 30, 10);
+            nameText.setLayoutParams(params);
+            nameArray.add(nameText);
+
+            Spinner spinner = new Spinner(context);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, genders);
+            spinner.setAdapter(spinnerArrayAdapter);
+
+            LinearLayout.LayoutParams spinnerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f);
+            spinnerParams.setMargins(30, 10, 30, 30);
+            spinner.setLayoutParams(spinnerParams);
+            genderArray.add(spinner);
+
+
+            EditText ageText = new EditText(context);
+            ageText.setHint("Age");
+            ageText.setInputType(InputType.TYPE_CLASS_NUMBER);
+            LinearLayout.LayoutParams paramsage = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            paramsage.setMargins(30, 10, 30, 10);
+            ageText.setLayoutParams(paramsage);
+            ageArray.add(ageText);
+
+
+            parent.addView(nameText);
+            parent.addView(ageText);
+            parent.addView(spinner);
+
+        }
+
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = getLayoutInflater().inflate(R.layout.explore_couch_display, container, false);
-        progressBar = v.findViewById(R.id.marker_progressExplore);
+        progressBar = v.findViewById(R.id.marker_progressECD);
         img1 = v.findViewById(R.id.img1Explore);
         img2 = v.findViewById(R.id.img2Explore);
         img3 = v.findViewById(R.id.img3Explore);
@@ -126,12 +238,25 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         hostPic = v.findViewById(R.id.couchOwnerPicECD);
         imgGrid = v.findViewById(R.id.imgGrid);
         noImgText = v.findViewById(R.id.noImageText);
-
+        reqButton = v.findViewById(R.id.requestButton);
+        dateCard = v.findViewById(R.id.dateCard);
+        fromDate = v.findViewById(R.id.fromDate);
+        toDate = v.findViewById(R.id.toDate);
+        fromDate.setInputType(InputType.TYPE_NULL);
+        toDate.setInputType(InputType.TYPE_NULL);
+        accCard = v.findViewById(R.id.accCard);
+        decAdults = v.findViewById(R.id.decAdultsExplore);
+        incAdults = v.findViewById(R.id.incAdultsExplore);
+        submitAcc = v.findViewById(R.id.submitAcc);
+        dataFillCard = v.findViewById(R.id.dataFillCard);
+        dynamicLL = v.findViewById(R.id.dynamicUserInput);
+        accText = v.findViewById(R.id.adultNumberAcc);
+        fancyText = v.findViewById(R.id.fancyText);
         currentMap = getterSetterForExploreDisplay.getMapForMatchedCouch();
         currentHostUrl = getterSetterForExploreDisplay.getUid();
         currentUid = getUidFromUrl(currentHostUrl);
         currentGcid = getterSetterForExploreDisplay.getGcid();
-        Glide.with(getContext()).load(currentHostUrl).into(hostPic);
+        Glide.with(getContext()).load(currentHostUrl).apply(new RequestOptions().placeholder(R.drawable.ic_person).signature(new ObjectKey(System.currentTimeMillis()))).into(hostPic);
         //Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
 
         //PERMISSION CHECK
@@ -162,16 +287,234 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                 });
 
 
+        reqButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dateCard.getVisibility() == View.GONE) {
+                    fancyText.setVisibility(View.VISIBLE);
+                    reqButton.setText("Inititiate Request");
+                    dateCard.setVisibility(View.VISIBLE);
+                    accCard.setVisibility(View.VISIBLE);
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mainLayout.fullScroll(View.FOCUS_DOWN);
+                        }
+                    }, 200);
+                    calendarFrom = Calendar.getInstance();
+                    calendarTo = Calendar.getInstance();
 
+                    dateFromListener = new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                              int dayOfMonth) {
+                            calendarFrom.set(Calendar.YEAR, year);
+                            calendarFrom.set(Calendar.MONTH, monthOfYear);
+                            calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            updateLabel(true);
+                        }
+
+                    };
+                    dateToListener = new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                              int dayOfMonth) {
+                            calendarTo.set(Calendar.YEAR, year);
+                            calendarTo.set(Calendar.MONTH, monthOfYear);
+                            calendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            updateLabel(false);
+                        }
+
+                    };
+                    fromDate.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
+                            new DatePickerDialog(getActivity(), dateFromListener, calendarFrom
+                                    .get(Calendar.YEAR), calendarFrom.get(Calendar.MONTH),
+                                    calendarFrom.get(Calendar.DAY_OF_MONTH)).show();
+                        }
+                    });
+                    toDate.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            // TODO Auto-generated method stub
+                            new DatePickerDialog(getActivity(), dateToListener, calendarTo
+                                    .get(Calendar.YEAR), calendarTo.get(Calendar.MONTH),
+                                    calendarTo.get(Calendar.DAY_OF_MONTH)).show();
+                        }
+                    });
+
+                    submitAcc.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            guestDetailsClicked = true;
+                            dataFillCard.setVisibility(View.VISIBLE);
+                            accCard.setVisibility(View.GONE);
+                            noOfGuests = Integer.parseInt(accText.getText().toString());
+                            generateAndPutLL(noOfGuests, getContext(), dynamicLL);
+                        }
+                    });
+                }else if(toDate == null || toDate.getText().toString().trim().equals("")||fromDate.getText()==null||fromDate.getText().toString().trim().equals("")){
+                    fromDate.setError("Add the dates");
+                    fromDate.requestFocus();
+                    toDate.setError("Add the dates");
+                    Handler errorRemove = new Handler();
+                    errorRemove.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fromDate.setError(null);
+                            toDate.setError(null);
+                        }
+                    },3000);
+                }
+                else if(dateMistmatch()){
+                    toDate.setError("This date can't be before Arrival date");
+                    toDate.requestFocus();
+                    Handler errorRemove = new Handler();
+                    errorRemove.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            fromDate.setError(null);
+                            toDate.setError(null);
+                        }
+                    },3000);
+                }
+                else if(!guestDetailsClicked){
+                    submitAcc.requestFocus();
+                    Snackbar snackbar = Snackbar.make(mainLayout, "Your need to enter some details of all of you", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                else{
+
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
+                    /*todo
+                    if(db.collection("bookings").where(couch_id_key, current_couch_id).get()
+                        .addOn....(new On...
+                            public void onSuccess...(){
+                                //todo Check if the selected date above lies between current bookings, if any
+                            }
+                        }
+                     */
+                    //check that all data has been filled and appropriately
+                    if (fromDate == null || fromDate.getText().toString().trim().equals("")) {
+                        fromDate.setError("Pick a date!");
+                        fromDate.requestFocus();
+                        Handler errorRemove = new Handler();
+                        errorRemove.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fromDate.setError(null);
+                                toDate.setError(null);
+                            }
+                        },3000);
+                    } else if (toDate == null || toDate.getText().toString().trim().equals("")) {
+                        toDate.setError("Pick a date!");
+                        toDate.requestFocus();
+                        Handler errorRemove = new Handler();
+                        errorRemove.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fromDate.setError(null);
+                                toDate.setError(null);
+                            }
+                        },3000);
+                    }else if(dateMistmatch()){
+                        toDate.requestFocus();
+                        toDate.setError("This date can't be before Arrival date");
+                        Handler errorRemove = new Handler();
+                        errorRemove.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                fromDate.setError(null);
+                                toDate.setError(null);
+                            }
+                        },3000);
+                    }
+                    else {
+
+                        for (int i =0; i<noOfGuests; i++){
+                            if(nameArray.get(i).getText()==null||nameArray.get(i).getText().toString().trim().equals("")){
+                                nameArray.get(i).setError("You can't skip this!");
+                            }
+                            else if(ageArray.get(i).getText()==null||ageArray.get(i).getText().toString().trim().equals("")){
+                                ageArray.get(i).setError("You can't skip this!");
+                            }
+                        }
+
+                    }
+
+                    //retrieve the latest global req counter
+                    current_global_req_counter = 0;
+                    db.collection("metadata").document("request").get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    current_global_req_counter = Integer.parseInt(documentSnapshot.get(REQUEST_GLOBAL_COUNTER_KEY).toString());
+                                }
+                            });
+
+
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //retrieve all the guests data and upload it
+                            for(int i = 0; i<noOfGuests; i++){
+
+                                HashMap<String,Object> hashMap = new HashMap<>();
+                                hashMap.put(GUEST_NAME_KEY,nameArray.get(i).getText().toString());
+                                hashMap.put(GUEST_GENDER_KEY,genderArray.get(i).getSelectedItem().toString());
+                                hashMap.put(GUEST_AGE_KEY,ageArray.get(i).getText().toString());
+                                db.collection("requests").document(Integer.toString(current_global_req_counter+1)).collection("guests").document(Integer.toString(i)).set(hashMap);
+
+
+                                Snackbar.make(mainLayout, "GRC is"+current_global_req_counter,Snackbar.LENGTH_LONG).show();
+
+                                //Set data for the request itself
+                                hashMap = new HashMap<>();
+                                hashMap = (HashMap) thisMap;
+                                hashMap.put(REQUEST_GLOBAL_ID_KEY, (current_global_req_counter+1));
+                                hashMap.put(REQUEST_GUEST_ID_KEY, UID);
+                                hashMap.put(REQUEST_ACC_KEY,noOfGuests);
+                                hashMap.put(REQUEST_STARTDATE_KEY,fromDate.getText().toString());
+                                hashMap.put(REQUEST_ENDDATE_KEY,toDate.getText().toString());
+                                db.collection("requests").document(Integer.toString(current_global_req_counter + 1)).set(hashMap);
+                                db.collection("metadata").document("request").update(REQUEST_GLOBAL_COUNTER_KEY, (current_global_req_counter+1));
+
+
+                            }
+                        }
+                    },3000);
+
+                    progressBar.setVisibility(View.VISIBLE);
+                    Handler handler2 = new Handler();
+                    handler2.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+                        }
+                    },6000);
+                }
+            }
+        });
         //Lets figure out the map for current
 
-        Map<String, Object> thisMap=null;
+        thisMap = null;
         for (int i = 0; i < currentMap.size(); i++) {
             if (currentMap.get(i).get(COUCH_GLOBAL_ID_KEY).toString().trim().equals(currentGcid.trim())) {
                 thisMap = currentMap.get(i);
                 break;
             }
-           // nameCouch.setText(nameCouch.getText().toString()+currentMap.get(i).get(COUCH_OWNER_UID_KEY).toString()+"\n");
+            // nameCouch.setText(nameCouch.getText().toString()+currentMap.get(i).get(COUCH_OWNER_UID_KEY).toString()+"\n");
         }
         //Lets figure the Couch Id to obtain images from and also no of images
         String couchId = thisMap.get(COUCH_ID_KEY).toString().trim();
@@ -179,7 +522,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         urls = buildImgUrlsFromCouchId(couchId, numOfImages);
         //set images
 
-        if(numOfImages==0){
+        if (numOfImages == 0) {
             noImgText.setVisibility(View.VISIBLE);
             imgGrid.setVisibility(View.GONE);
         }
@@ -205,10 +548,10 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                     currentIV = img6;
                     break;
             }
-           // Toast.makeText(getActivity(), "we got"+urls[i], Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getActivity(), "we got"+urls[i], Toast.LENGTH_SHORT).show();
             Glide.with(getActivity().getBaseContext()).load(urls[i]).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).into(currentIV);
         }
-        for(int i = 0; i<6-numOfImages; i++){
+        for (int i = 0; i < 6 - numOfImages; i++) {
 
             switch (i) {
                 case 0:
@@ -237,26 +580,54 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         adultNumber.setText(thisMap.get(NO_OF_ADULTS_KEY).toString());
         accTotal.setText(Integer.toString(Integer.parseInt(thisMap.get(NO_OF_ROOMS_KEY).toString()) * Integer.parseInt(thisMap.get(NO_OF_ADULTS_KEY).toString())));
         petsPref.setText(thisMap.get(COUCH_PET_KEY).toString());
+        maxAcc = Integer.parseInt(thisMap.get(NO_OF_ROOMS_KEY).toString()) * Integer.parseInt(thisMap.get(NO_OF_ADULTS_KEY).toString());
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 hostName.setText(currentHostName);
             }
-        },1000);
+        }, 1000);
         img1.setOnClickListener(this);
         img2.setOnClickListener(this);
         img3.setOnClickListener(this);
         img4.setOnClickListener(this);
         img5.setOnClickListener(this);
         img6.setOnClickListener(this);
+        decAdults.setOnClickListener(this);
+        incAdults.setOnClickListener(this);
         return v;
     }
-
+    public static boolean dateMistmatch() {
+        Date date1=null,date2=null;
+        try {
+             date1 = new SimpleDateFormat("dd/MM/yy").parse(fromDate.getText().toString());
+             date2 = new SimpleDateFormat("dd/MM/yy").parse(toDate.getText().toString());
+        }
+        catch (Exception e){
+            Log.e("TAG","exception in date conversion caught",new Throwable());
+        }
+        if(date2.before(date1))
+            return true;
+        else
+            return false;
+    }
     public static String getUidFromUrl(String url) {
         int startIndex = url.lastIndexOf('/') + 1;
         int endIndex = url.lastIndexOf('.');
         return url.substring(startIndex, endIndex);
+    }
+
+    private void updateLabel(boolean b) {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        if (b) {
+            fromDate.setText(sdf.format(calendarFrom.getTime()));
+        } else {
+            toDate.setText(sdf.format(calendarTo.getTime()));
+
+        }
+
     }
 
     public static String[] buildImgUrlsFromCouchId(String cid, int counter) {
@@ -273,6 +644,23 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.decAdultsExplore:
+                noOfGuests = Integer.parseInt(accText.getText().toString());
+                if (noOfGuests == 1) {
+                } else {
+                    noOfGuests--;
+                    accText.setText(Integer.toString(noOfGuests));
+                }
+                break;
+            case R.id.incAdultsExplore:
+                noOfGuests = Integer.parseInt(accText.getText().toString());
+                if(noOfGuests==maxAcc) {
+                }
+                else{
+                    noOfGuests++;
+                    accText.setText(Integer.toString(noOfGuests));
+                }
+                break;
             case R.id.img1Explore:
                 Intent intent = new Intent(getActivity().getBaseContext(), FullScreenImageView.class);
                 intent.putExtra("CURRENT_IMG", urls[0]);

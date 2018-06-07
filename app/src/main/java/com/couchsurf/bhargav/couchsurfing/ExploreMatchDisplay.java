@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +39,8 @@ import java.util.Map;
 
 public class ExploreMatchDisplay extends Fragment {
     View v;
-
+    View divider, dividerView;
+    TextView heading;
     final private static String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private static String BOOKING_COUNTER_KEY = "No_Of_Bookings";
 
@@ -57,7 +60,6 @@ public class ExploreMatchDisplay extends Fragment {
     final private static String COUCH_OWNER_UID_KEY = "Owner_Of_Couch_Is";
     final private static String COUCH_GLOBAL_ID_KEY = "Global_Couch_Id";
 
-    ProgressBar markerProgress;
     static TextView noCouchTV;
 
     static SharedPreferences sharedpreferences;
@@ -158,6 +160,9 @@ public class ExploreMatchDisplay extends Fragment {
 
         noCouchTV = v.findViewById(R.id.noCouchTextViewExplore);
         markerProg = v.findViewById(R.id.marker_progressExplore);
+        heading = v.findViewById(R.id.headingEMD);
+        divider = v.findViewById(R.id.headingDividerEMD);
+        dividerView = v.findViewById(R.id.dividerView);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -170,7 +175,7 @@ public class ExploreMatchDisplay extends Fragment {
 
         getData(getActivity(), getterSetterForExploreDisplay.getCity());
 
-
+        heading.setText(heading.getText().toString()+getterSetterForExploreDisplay.getCity()+" returned these");
         recyclerView = (RecyclerView) v.findViewById(R.id.ed_rv);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -178,8 +183,11 @@ public class ExploreMatchDisplay extends Fragment {
             public void run() {
                 if (numberOfMatchedCouch == 0) {
                     noCouchTV.setText("No Couch are available at this location currently");
-                    markerProgress.setVisibility(View.GONE);
+                    markerProg.setVisibility(View.GONE);
                 } else {
+                    heading.setVisibility(View.VISIBLE);
+                    divider.setVisibility(View.VISIBLE);
+                    dividerView.setVisibility(View.VISIBLE);
                     LinearLayoutManager llm = new LinearLayoutManager(recyclerView.getContext());
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                             llm.getOrientation());
@@ -191,7 +199,7 @@ public class ExploreMatchDisplay extends Fragment {
                             String uidItem = (String) rvAdapter.data.get(position).url;
                             String gcidItem = (String) rvAdapter.data.get(position).global_cid;
                             //Toast.makeText(getActivity(),selectedNameItem,Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(),uidItem,Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getActivity(),uidItem,Toast.LENGTH_LONG).show();
                             getterSetterForExploreDisplay.setUid(uidItem);
                             getterSetterForExploreDisplay.setGcid(gcidItem);
                             getterSetterForExploreDisplay.setMap(mapOfMatchedCouch);

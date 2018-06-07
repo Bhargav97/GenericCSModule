@@ -41,6 +41,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -383,11 +384,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                         boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                         if (!glink.trim().equals("") && !customDP) {
                             //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
-                            Glide.with(getActivity().getBaseContext()).load(glink).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(profileImage);
+                            Glide.with(getActivity().getBaseContext()).load(glink).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(profileImage);
                         } else if (!link.trim().equals("")) {
-                            Toast.makeText(getActivity(),"got to here",Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getActivity(),"got to here",Toast.LENGTH_LONG).show();
 
-                            Glide.with(getActivity().getBaseContext()).load(link).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).into(profileImage);
+                            Glide.with(getActivity().getBaseContext()).load(link).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).into(profileImage);
                             //options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
                             // Glide.with(getActivity().getBaseContext()).load(link).apply(options).thumbnail(0.5f).into(profileImage);
 

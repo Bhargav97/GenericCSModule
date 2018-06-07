@@ -40,9 +40,9 @@ public class RVEDAdapter extends RecyclerView.Adapter<RVEDAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         RVExploreDisplay current = data.get(position);
-        Glide.with(holder.nameText.getContext()).load(current.url).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).into(holder.ownerPic);
+        Glide.with(holder.nameText.getContext()).load(current.url).apply(new RequestOptions().placeholder(R.drawable.ic_person).signature(new ObjectKey(System.currentTimeMillis()))).into(holder.ownerPic);
         holder.nameText.setText(current.name);
-        holder.vacText.setText("Accomodation for: "+ Integer.toString(current.vacancyFor));
+        holder.vacText.setText("  "+Integer.toString(current.vacancyFor));
         holder.globalCidText.setText("ID# "+current.global_cid);
     }
 

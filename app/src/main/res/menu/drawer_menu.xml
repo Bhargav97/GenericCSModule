@@ -28,6 +28,11 @@
             android:icon="@drawable/ic_edit"
             android:title="Manage your Couches" />
 
+        <item
+            android:id="@+id/navadmin"
+            android:icon="@drawable/ic_edit"
+            android:title="Ghastly things" />
+
     </group>
 
     <item android:title="Other Actions">

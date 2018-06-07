@@ -1,10 +1,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mainLayoutECD"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fafafa"
@@ -54,12 +56,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:textAllCaps="true"
                     android:layout_weight="1"
-                    android:text=""
+                    android:gravity="center"
+                    android:textStyle="bold"                    android:text=""
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/locOfCouch"
@@ -75,10 +77,10 @@
                 <TextView
                     android:id="@+id/descOfCouch"
                     android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center_horizontal"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
+                    android:gravity="center_horizontal"
+                    android:padding="10dp"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="15sp" />
@@ -125,6 +127,7 @@
                 <TextView
                     android:id="@+id/nameOfHost"
                     android:layout_width="0dp"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="10dp"
@@ -161,15 +164,17 @@
                     android:text="Here are some images of this place"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
+
                 <TextView
+                    android:id="@+id/noImageText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:visibility="gone"
-                    android:id="@+id/noImageText"
                     android:text="No images uploaded by the host"
                     android:textColor="@color/black_overlay"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
                 <GridLayout
                     android:id="@+id/imgGrid"
                     android:layout_width="match_parent"
@@ -301,9 +306,9 @@
             app:cardCornerRadius="5dp">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -325,16 +330,16 @@
                         android:id="@+id/roomNumberExplore"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
                         android:layout_weight="1"
                         android:text=""
-                        android:layout_gravity="center_vertical"
 
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
                         android:textSize="30sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -356,7 +361,6 @@
                     <TextView
                         android:id="@+id/adultNumberExplore"
                         android:layout_width="0dp"
-                        android:textStyle="bold"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
@@ -365,7 +369,8 @@
                         android:text=""
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:textSize="30sp" />
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <View
@@ -391,9 +396,8 @@
                     <TextView
                         android:id="@+id/accomoExplore"
                         android:layout_width="0dp"
-                        android:textStyle="bold"
-
                         android:layout_height="wrap_content"
+
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
@@ -401,7 +405,8 @@
                         android:text=""
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:textColor="@color/black"
-                        android:textSize="30sp" />
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -447,8 +452,235 @@
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/fancyText"
+            android:visibility="gone"
+            style="@style/TutHeadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="Sure, just fill these details!"
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/dateCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:elevation="20dp"
+            android:padding="10dp"
+            android:paddingBottom="25dp"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Choose the dates of your Stay"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="From"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+                        <EditText
+                            android:focusableInTouchMode="false"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:id="@+id/fromDate"
+                            android:hint="From date"
+                            android:clickable="true"
+                            android:inputType="none"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:gravity="center"
+                            android:text="To"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+                        <EditText
+                            android:focusableInTouchMode="false"
+
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:id="@+id/toDate"
+                            android:hint="To date"
+                            android:clickable="true"
+                            android:inputType="none"/>
+                    </LinearLayout>
 
 
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/accCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:elevation="20dp"
+            android:padding="10dp"
+            android:paddingBottom="25dp"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="How many of you will be arriving?"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_marginStart="10dp"
+                        android:id="@+id/decAdultsExplore"
+                        style="@style/DecButtonStyle"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:id="@+id/adultNumberAcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:text="2"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <ImageButton
+                        android:id="@+id/incAdultsExplore"
+                        style="@style/IncButtonStyle"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical" />
+
+                    <Button
+                        android:id="@+id/submitAcc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Enter Details"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:padding="20dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginRight="20dp"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/dataFillCard"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:elevation="20dp"
+            android:padding="10dp"
+            android:paddingBottom="25dp"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Who are you guys?"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:id="@+id/dynamicUserInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -469,7 +701,7 @@
                 android:text="Request for this Couch" />
 
             <ProgressBar
-                android:id="@+id/marker_progressReview"
+                android:id="@+id/marker_progressECD"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

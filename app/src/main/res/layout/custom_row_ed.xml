@@ -5,18 +5,12 @@
     android:orientation="horizontal"
     android:background="?android:attr/selectableItemBackground">
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/couchOwnerPic"/>
-    <View
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/black_overlay"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,7 +22,7 @@
             android:padding="25dp"
             android:gravity="start"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/black"/>
         <LinearLayout
             android:orientation="horizontal"
@@ -36,6 +30,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:drawableLeft="@drawable/ic_people"
                 android:id="@+id/vacancyData"
                 android:gravity="start"
                 android:layout_width="0dp"
@@ -46,10 +41,11 @@
                 android:layout_weight="1"
                 android:paddingBottom="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="15sp"
-                android:textColor="@color/colorAccent"/>
+                android:textSize="20sp"
+                android:textColor="@color/black_overlay"/>
 
             <TextView
+                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/globalCid"
                 android:textAllCaps="true"
                 android:gravity="end"

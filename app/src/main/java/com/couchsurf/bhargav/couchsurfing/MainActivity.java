@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 hideItem(R.id.navreq);
                 break;
             case 1:
-               // hideItem(R.id.);
+                hideItem(R.id.navadmin);
                 break;
             case 2:
                 //
@@ -238,6 +238,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.navexplore:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ExploreFragment(),"EF").addToBackStack(null).commit();
+                break;
+            case R.id.navadmin:
+                startActivity(new Intent(
+                        MainActivity.this, AdminPanel.class
+                ));
                 break;
             case R.id.navfeedback:
                 Toast.makeText(this, "What's the hurry dude!!",
@@ -323,9 +328,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                         if (!glink.trim().equals("") && !customDP) {
                             //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
-                            Glide.with(context).load(glink).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
+                            Glide.with(context).load(glink).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
                         } else if(!link.trim().equals("")){
-                            Glide.with(context).load(link).apply(new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
+                            Glide.with(context).load(link).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
                             // options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
                             // Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
                         }

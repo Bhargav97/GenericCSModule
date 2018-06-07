@@ -26,10 +26,10 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/navUserImage"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
         android:src="@drawable/def_user_icon"
-        app:civ_border_width="2dp"
+        app:civ_border_width="1dp"
         app:civ_border_color="#FFFFFF"/>
 
     <TextView

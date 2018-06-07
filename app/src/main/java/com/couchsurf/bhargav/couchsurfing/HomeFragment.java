@@ -92,16 +92,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         //SHOW APPROPRIATE CARDS FOR THE TYPE OF USER
         switch (USER_TYPE) {
             case 0:
-                //
+                showViewWithAnim(100, adminPanel);
                 break;
             case 1:
-                showViewWithAnim(100, regNewCouch);
-                showViewWithAnim(800, manageCouches);
+                showViewWithAnim(100, adminPanel);
+                showViewWithAnim(100, manageCouches);
+                showViewWithAnim(800, regNewCouch);
                 break;
             case 2:
-                showViewWithAnim(100, regNewCouch);
+                showViewWithAnim(100, adminPanel);
                 showViewWithAnim(600, manageCouches);
-                showViewWithAnim(1100, adminPanel);
+                showViewWithAnim(1100, regNewCouch);
                 break;
         }
         return v;
@@ -119,7 +120,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.adminPanel:
                 //
-                startActivity(new Intent(getActivity(), AdminPanel.class));
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ExploreFragment(),"EF").addToBackStack(null).commit();
                 break;
 
         }
