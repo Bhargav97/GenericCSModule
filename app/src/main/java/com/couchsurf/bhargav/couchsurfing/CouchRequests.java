@@ -111,63 +111,38 @@ public class CouchRequests extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        db.collection("users").document(UID).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        pending_req_count = Integer.parseInt(documentSnapshot.get(PENDING_REQ_KEY).toString());
-                    }
-                });
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        getData();
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(llm);
+        listener = new RecyclerViewClickListener() {
             @Override
-            public void run() {
-                getData();
+            public void onClick(View view, int position) {
+                String gridItem = (String) rvAdapter.data.get(position).GRid;
+                String urlItem = (String) rvAdapter.data.get(position).url;
+                String nameItem = (String) rvAdapter.data.get(position).name;
+                String accForItem = (String) rvAdapter.data.get(position).accFor;
+                String fromItem = (String) rvAdapter.data.get(position).fromDate;
+                String toItem = (String) rvAdapter.data.get(position).toDate;
+                getterSetterForCouchRequest.setGrid(gridItem);
+                getterSetterForCouchRequest.setAcc(accForItem);
+                getterSetterForCouchRequest.setFromDate(fromItem);
+                getterSetterForCouchRequest.setToDate(toItem);
+                getterSetterForCouchRequest.setGuestName(nameItem);
+                getterSetterForCouchRequest.setGuestUID(UtilityClass.getUidFromUrl(urlItem));
+                getterSetterForCouchRequest.setMap(mapOfRequests);
+
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new CouchReqDisplay(), "COUCH_REQ_DISP").addToBackStack(null).commit();
             }
-        }, 1000);
+        };
 
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (noOfFoundReq == 0) {
-                    noCouchTV.setText("No Requests yet");
-                    markerProg.setVisibility(View.GONE);
-                } else {
-
-                    LinearLayoutManager llm = new LinearLayoutManager(recyclerView.getContext());
-                    recyclerView.setLayoutManager(llm);
-                    listener = new RecyclerViewClickListener() {
-                        @Override
-                        public void onClick(View view, int position) {
-                            String gridItem = (String) rvAdapter.data.get(position).GRid;
-                            String urlItem = (String) rvAdapter.data.get(position).url;
-                            String nameItem = (String) rvAdapter.data.get(position).name;
-                            String accForItem = (String) rvAdapter.data.get(position).accFor;
-                            String fromItem = (String) rvAdapter.data.get(position).fromDate;
-                            String toItem = (String) rvAdapter.data.get(position).toDate;
-                            getterSetterForCouchRequest.setGrid(gridItem);
-                            getterSetterForCouchRequest.setAcc(accForItem);
-                            getterSetterForCouchRequest.setFromDate(fromItem);
-                            getterSetterForCouchRequest.setToDate(toItem);
-                            getterSetterForCouchRequest.setGuestName(nameItem);
-                            getterSetterForCouchRequest.setGuestUID(UtilityClass.getUidFromUrl(urlItem));
-                            getterSetterForCouchRequest.setMap(mapOfRequests);
-
-                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new CouchReqDisplay(), "COUCH_REQ_DISP").addToBackStack(null).commit();
-                        }
-                    };
-                    if(getActivity()!=null)
-                    tryToPopulateRV();
-                }
-            }
-        },5000);
         return v;
 
     }
-    public void getData () {
+
+    public void getData() {
         noOfFoundReq = 0;
         dataList = new ArrayList<>();
         nameData = new ArrayList<>();
@@ -199,33 +174,36 @@ public class CouchRequests extends Fragment {
                                 noOfFoundReq++;
                                 Log.d("TAG", document.getId() + " => " + document.getData());
                             }
+                            if (noOfFoundReq == 0) {
+                                noCouchTV.setText("No Requests yet");
+                                markerProg.setVisibility(View.GONE);
+                            } else {
+                                for (int i = 0; i < noOfFoundReq; i++) {
+                                    RVCouchReq rvCouchReq = new RVCouchReq();
+                                    rvCouchReq.GRid = globalRidData.get(i);
+                                    rvCouchReq.name = nameData.get(i);
+                                    rvCouchReq.url = urlData.get(i);
+                                    rvCouchReq.accFor = accData.get(i);
+                                    rvCouchReq.hostSeen = hostSeenData.get(i);
+                                    rvCouchReq.fromDate = fromDateData.get(i);
+                                    rvCouchReq.toDate = toDateData.get(i);
+                                    rvCouchReq.couchName = couchNameData.get(i);
+                                    rvCouchReq.couchLoc = couchLocData.get(i);
+                                    dataList.add(rvCouchReq);
+                                }
+                                if (getActivity() != null)
+                                    tryToPopulateRV();
+                            }
                         } else {
+
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < noOfFoundReq; i++) {
-                    RVCouchReq rvCouchReq = new RVCouchReq();
-                    rvCouchReq.GRid = globalRidData.get(i);
-                    rvCouchReq.name = nameData.get(i);
-                    rvCouchReq.url = urlData.get(i);
-                    rvCouchReq.accFor = accData.get(i);
-                    rvCouchReq.hostSeen = hostSeenData.get(i);
-                    rvCouchReq.fromDate = fromDateData.get(i);
-                    rvCouchReq.toDate = toDateData.get(i);
-                    rvCouchReq.couchName = couchNameData.get(i);
-                    rvCouchReq.couchLoc = couchLocData.get(i);
-                    dataList.add(rvCouchReq);
-                }
-            }
-        }, 3000);
     }
-    public void tryToPopulateRV(){
+
+    public void tryToPopulateRV() {
         noCouchTV.setVisibility(View.GONE);
         markerProg.setVisibility(View.GONE);
         rvAdapter = new RVCRAdapter(getActivity(), dataList, listener);

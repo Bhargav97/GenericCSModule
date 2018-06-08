@@ -130,6 +130,9 @@ public class CouchReqDisplay extends Fragment {
                             genderArrayStr.add(document.get(GUEST_GENDER_KEY).toString());
                             ageArrayStr.add(document.get(GUEST_AGE_KEY).toString());
                         }
+                        progressBar.setVisibility(View.GONE);
+                        if(getActivity()!=null)
+                            generateAndPutLL(noOfGuests,getContext(),dynamicLL);
                     }
                 });
 
@@ -137,9 +140,7 @@ public class CouchReqDisplay extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                progressBar.setVisibility(View.GONE);
-                if(getActivity()!=null)
-                generateAndPutLL(noOfGuests,getContext(),dynamicLL);
+
             }
         },5000);
 
