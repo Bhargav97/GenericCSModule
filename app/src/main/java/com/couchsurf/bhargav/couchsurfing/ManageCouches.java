@@ -33,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +65,7 @@ public class ManageCouches extends Fragment {
     public static int couchcounter;
     public static TextView noCouchTV;
     public static boolean filledList = false;
-    static String nameData[], locData[], couchId[];
+    static ArrayList<String> nameData, locData, couchId;
     static RecyclerView recyclerView;
     static RVMCAdapter rvAdapter;
     static RecyclerViewClickListener listener;
@@ -73,12 +75,12 @@ public class ManageCouches extends Fragment {
     public static ProgressBar markerProg;
     public static Button delAll;
     public static NestedScrollView mainLayout;
-    public static List<RVManageCouch> getData(final Activity act) {
+    public List<RVManageCouch> getData(final Activity act) {
         dataList = new ArrayList<>();
-        nameData = new String[couchcounter];
-        locData = new String[couchcounter];
-        couchId = new String[couchcounter];
-        for (int i = 1; i <= couchcounter; i++) {
+        /*nameData = new ArrayList<>();
+        locData = new ArrayList<>();
+        couchId = new ArrayList<>();*/
+       /* for (int i = 1; i <= couchcounter; i++) {
             final int j = i;  //works?
             db.collection("users").document(UID).collection("couches").document(Integer.toString(i))
                     .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -97,7 +99,30 @@ public class ManageCouches extends Fragment {
                 }
             });
 
-        }
+        }*/
+        Toast.makeText(getActivity(),"Uid is"+UID,Toast.LENGTH_LONG).show();
+        db.collection("users").document(UID).collection("couches").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        for(QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            if(documentSnapshot.getId().trim().equals("0")) {
+                            }
+                            else {
+                                RVManageCouch current = new RVManageCouch();
+                                current.name = documentSnapshot.get(COUCH_NAME_KEY).toString();
+                                current.loc = documentSnapshot.get(COUCH_CITY_KEY).toString() + ", " + documentSnapshot.get(COUCH_STATE_KEY).toString() + "\n" + documentSnapshot.get(COUCH_COUNTRY_KEY).toString();
+                                current.id = documentSnapshot.getId();
+                                dataList.add(current);
+                            }
+                        }
+                        if((getActivity())!=null)
+                            tryToPopulateRV(getActivity());
+                    }
+                });
+
+
         return dataList;
     }
 
@@ -155,8 +180,8 @@ public class ManageCouches extends Fragment {
                             }
                         };
                         getData(getActivity());
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
+
+                        /*handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 alignedList = new ArrayList<>();
@@ -179,7 +204,7 @@ public class ManageCouches extends Fragment {
                                 if(getActivity()!=null)
                                     tryToPopulateRV(getActivity());
                             }
-                        },4000);
+                        },4000);*/
                     }
                 }
             }
@@ -210,7 +235,7 @@ public class ManageCouches extends Fragment {
     public static void tryToPopulateRV(Activity activity){
         noCouchTV.setVisibility(View.GONE);
         markerProg.setVisibility(View.GONE);
-        rvAdapter = new RVMCAdapter(activity, alignedList, listener);
+        rvAdapter = new RVMCAdapter(activity, dataList, listener);
         recyclerView.setAdapter(rvAdapter);
         delAll.setVisibility(View.VISIBLE);
 
