@@ -48,6 +48,7 @@ public class TravellerInfoFragment extends Fragment {
     final private String CUSTOM_DP_KEY = "CUSTOM_DP";
     final private String DESC_KEY = "DESC";
     final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
+    final private String PENDING_REQ_KEY = "PENDING_REQUEST";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -146,6 +147,7 @@ public class TravellerInfoFragment extends Fragment {
                     newUser.put(DESC_KEY,"");
                     newUser.put(DP_CHANGE_KEY,0);
                     newUser.put(COUCH_ID_COUNTER_KEY,0);
+                    newUser.put(PENDING_REQ_KEY,0);
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered
                     db = FirebaseFirestore.getInstance();
@@ -189,6 +191,7 @@ public class TravellerInfoFragment extends Fragment {
                     editor.putString("UID",UID);
                     editor.putString("UNAME",name);
                     editor.putInt("DP_CHANGE_COUNTER",0);
+                    editor.putInt("PENDING_REQUESTS",0);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }

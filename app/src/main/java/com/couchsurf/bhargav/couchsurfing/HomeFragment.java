@@ -17,6 +17,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hanks.htextview.base.HTextView;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
     static public int USER_TYPE;
     static public String UID;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                welcome.setText(welcome.getText() + " " + UNAME + "!");
+                welcome.setText(welcome.getText() + " " + UNAME.substring(0, UNAME.indexOf(' ')) + "!");
                 welcome.setAlpha(0.0f);
                 welcome.setVisibility(View.VISIBLE);
                 welcome.animate().alpha(1.0f);

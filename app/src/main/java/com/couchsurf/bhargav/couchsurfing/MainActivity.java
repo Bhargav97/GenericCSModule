@@ -244,6 +244,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         MainActivity.this, AdminPanel.class
                 ));
                 break;
+            case R.id.navreq:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new CouchRequests(),"REQ_FRAGMENT").addToBackStack(null).commit();
+                break;
             case R.id.navfeedback:
                 Toast.makeText(this, "What's the hurry dude!!",
                         Toast.LENGTH_LONG).show();

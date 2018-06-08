@@ -95,21 +95,23 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
 
     final public String REQUEST_GLOBAL_COUNTER_KEY = "Global_Request_Counter";
     final public String REQUEST_GUEST_ID_KEY = "Requested_By";
+    final public String REQUEST_GUEST_NAME_KEY = "Requested_By_Name";
     final public String REQUEST_GLOBAL_ID_KEY = "Global_Request_Id";
     final public String REQUEST_ACC_KEY = "Accommodation_Requested_For";
     final public String REQUEST_STARTDATE_KEY = "Arrival_Of_Guests_On";
     final public String REQUEST_ENDDATE_KEY = "Guests_Leave_On";
+    final public String REQUEST_HOSTSEEN_KEY = "Host_Seen_Req";
 
     final public String GUEST_NAME_KEY = "Name_Of_Guest";
     final public String GUEST_GENDER_KEY = "Gender_Of_Guest";
     final public String GUEST_AGE_KEY = "Age_Of_Guest";
-
+    final private String PENDING_REQ_KEY = "PENDING_REQUEST";
 
 
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
-    static public String UID;
+    static public String UID, UNAME;
     static SharedPreferences sharedpreferences;
     final static private String INITURL = "https://s3.amazonaws.com/couchsurfing-userfiles-mobilehub-151528593/";
     final static private String COUCHFOLDER = "s3Folder/couchPics/"; //format- "s3Folder/couchPics/UID/CouchId(>0)/ImgId"
@@ -117,7 +119,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     ImageView current;
     ImageButton decrooms, incrooms, decadults, incadults;
     TextView roomNumber, adultNumber, loc, accTotal, petsPref, nameCouch, descCouch, hostName, fancyText, adultNumAcc;
-    String urls[];
+    String urls[];int letsUpdateReqCounter;
     CircleImageView hostPic;
     Button submitButton, deleteButton;
     ScrollView mainLayout;
@@ -286,7 +288,15 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                     }
                 });
 
-
+        db.collection("users").document(UID).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        UNAME = documentSnapshot.get(NAME_KEY).toString();
+                        //Toast.makeText(getActivity(),currentHostName,Toast.LENGTH_LONG).show();
+                    }
+                });
         reqButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -487,8 +497,21 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                                 hashMap.put(REQUEST_ACC_KEY,noOfGuests);
                                 hashMap.put(REQUEST_STARTDATE_KEY,fromDate.getText().toString());
                                 hashMap.put(REQUEST_ENDDATE_KEY,toDate.getText().toString());
+                                hashMap.put(REQUEST_HOSTSEEN_KEY,false);
+                                hashMap.put(REQUEST_GUEST_NAME_KEY,UNAME);
                                 db.collection("requests").document(Integer.toString(current_global_req_counter + 1)).set(hashMap);
                                 db.collection("metadata").document("request").update(REQUEST_GLOBAL_COUNTER_KEY, (current_global_req_counter+1));
+
+
+                                db.collection("users").document(currentUid).get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                DocumentSnapshot documentSnapshot = task.getResult();
+                                                letsUpdateReqCounter = Integer.parseInt(documentSnapshot.get(PENDING_REQ_KEY).toString());
+                                                db.collection("users").document(currentUid).update(PENDING_REQ_KEY,(letsUpdateReqCounter+1));
+                                            }
+                                        });
 
 
                             }
