@@ -42,7 +42,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         arrBottom = v.findViewById(R.id.arrBottom);
         bookBottom = v.findViewById(R.id.bookBottom);
         reqBottom = v.findViewById(R.id.reqBottom);
-
+        ((MainActivity) getActivity()).setActionBarTitle("Status");
+        ((MainActivity) getActivity()).setNavItem(R.id.navstatus);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -62,41 +63,16 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             makeDull(bookingHeading,bookBottom);
             makeDull(requestHeading,reqBottom);
             makeBright(arrivalHeading,arrBottom);
-            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container_status,new ArrivalsFragment(),"ARRIVAL_STATUS_FRAGMENT").addToBackStack(null).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container_status,new ArrivalsFragment(),"ARRIVAL_STATUS_FRAGMENT").commit();
 
         }
         else {
             makeDull(arrivalHeading,arrBottom);
             makeDull(requestHeading,reqBottom);
             makeBright(bookingHeading,bookBottom);
-            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container_status,new BookingsFragment(),"BOOKING_STATUS_FRAGMENT").addToBackStack(null).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container_status,new BookingsFragment(),"BOOKING_STATUS_FRAGMENT").commit();
 
         }
-        /*
-        int delay = 2000; //milliseconds
-        Handler handler;
-        ArrayList<String> arrMessages = new ArrayList<>();
-        int position = 0;
-        ScaleTextView fancyText;
-        arrMessages.add("Hi");
-        arrMessages.add("Keep checking this space");
-        arrMessages.add("For any updates");
-        arrMessages.add("on your requests or bookings");
-
-        fancyText = v.findViewById(R.id.fancyTextSL);
-        fancyText.animateText(arrMessages.get(position));
-        handler = new Handler();
-        handler.postDelayed(new Runnable(){
-            public void run(){
-
-                handler.postDelayed(this, delay);
-                if(position>=arrMessages.size())
-                    position=0;
-                fancyText.animateText(arrMessages.get(position));
-                position++;
-            }
-        }, delay);*/
-
 
         arrivalHeading.setOnClickListener(this);
         bookingHeading.setOnClickListener(this);

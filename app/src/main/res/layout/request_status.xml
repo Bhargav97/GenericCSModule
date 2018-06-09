@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fafafa"
+    android:id="@+id/mainLayoutRS">
+
+    <ProgressBar
+        android:id="@+id/marker_progressRS"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="50dp"
+        android:indeterminate="true"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/noCouchTextViewRS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:text="Please wait while loading..."
+        android:textColor="@color/black_overlay"
+        android:textSize="15sp" />
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rs_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

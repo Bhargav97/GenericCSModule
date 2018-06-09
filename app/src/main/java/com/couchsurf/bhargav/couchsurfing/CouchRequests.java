@@ -137,7 +137,7 @@ public class CouchRequests extends Fragment {
                 getterSetterForCouchRequest.setGuestUID(UtilityClass.getUidFromUrl(urlItem));
                 getterSetterForCouchRequest.setMap(mapOfRequests);
 
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new CouchReqDisplay(), "COUCH_REQ_DISP").addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new CouchReqDisplay(), "COUCH_REQ_DISP").commit();
             }
         };
 

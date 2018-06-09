@@ -79,10 +79,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     static ImageView userImage;
     static boolean doneFlag = false;
     static SharedPreferences sharedpreferences;
-    public static void setTitleToHome(){
+
+    public static void setTitleToHome() {
         actionBar.setTitle("Home");
     }
-
 
 
     @Override
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void handleError(Exception e) {
-                        Toast.makeText(MainActivity.this,"ERROROROR",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "ERROROROR", Toast.LENGTH_LONG).show();
                         Log.e("MainActivity", "Error in retrieving Identity ID: " + e.getMessage());
                     }
                 });
@@ -124,11 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBar = getSupportActionBar();
         setTitleToHome();
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        USER_TYPE=sharedpreferences.getInt("USER_TYPE",0);
-        if(sharedpreferences.getString("UID","").trim().equals(""))
-            Toast.makeText(MainActivity.this, "Error retrieving UID",Toast.LENGTH_LONG).show();
+        USER_TYPE = sharedpreferences.getInt("USER_TYPE", 0);
+        if (sharedpreferences.getString("UID", "").trim().equals(""))
+            Toast.makeText(MainActivity.this, "Error retrieving UID", Toast.LENGTH_LONG).show();
         else
-            UID = sharedpreferences.getString("UID","");
+            UID = sharedpreferences.getString("UID", "");
         options = new RequestOptions().signature(new ObjectKey(System.currentTimeMillis()));
 
         //Initializing firebase objects
@@ -146,9 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         databaseReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if(USER_TYPE==1)
+                if (USER_TYPE == 1)
                     userName.setText(documentSnapshot.get("Name").toString() + " (Host)");
-                else if(USER_TYPE==0)
+                else if (USER_TYPE == 0)
                     userName.setText(documentSnapshot.get("Name").toString() + " (Guest)");
                 else
                     userName.setText(documentSnapshot.get("Name").toString() + " (Admin)");
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         //show appropriate menu items
-        switch (USER_TYPE){
+        switch (USER_TYPE) {
             case 0:
                 hideItem(R.id.navmanage);
                 hideItem(R.id.navreq);
@@ -207,37 +207,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        if(savedInstanceState==null) {
+        if (savedInstanceState == null) {
             //Do when the app begins
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
             //startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             navigationView.setCheckedItem(R.id.navhome);
         }
 
     }
-    public static void setNavItem(int id){
+
+    public static void setNavItem(int id) {
         navigationView.setCheckedItem(id);
     }
 
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
+
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item){
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch(id){
+        switch (id) {
             case R.id.navhome:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
                 //getSupportActionBar().show();
                 setTitleToHome();
                 drawer.closeDrawers();
-               // showSearch();
+                // showSearch();
                 break;
             case R.id.navmanage:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ManageCouches(),"MC").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new ManageCouches(), "MC").addToBackStack(null).commit();
                 break;
             case R.id.navexplore:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ExploreFragment(),"EF").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new ExploreFragment(), "EF").addToBackStack(null).commit();
                 break;
             case R.id.navadmin:
                 startActivity(new Intent(
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ));
                 break;
             case R.id.navreq:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new CouchRequests(),"REQ_FRAGMENT").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new CouchRequests(), "REQ_FRAGMENT").addToBackStack(null).commit();
                 break;
             case R.id.navfeedback:
                 Toast.makeText(this, "What's the hurry dude!!",
@@ -253,11 +255,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.navprofile:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ProfileFragment(),"PROFILE_FRAGMENT").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new ProfileFragment(), "PROFILE_FRAGMENT").addToBackStack(null).commit();
                 //startActivity(new Intent(MainActivity.this,ProfileScreen.class));
                 break;
             case R.id.navstatus:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new StatusFragment(),"STATUS_FRAGMENT").addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new StatusFragment(), "STATUS_FRAGMENT").commit();
 
                 break;
             case R.id.navsettings:
@@ -278,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -291,35 +294,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if(mFragmentManager.getBackStackEntryCount() == 1){
+        } else if (mFragmentManager.getBackStackEntryCount() == 1) {
             //showSearch();
-           // getSupportActionBar().show();
+            // getSupportActionBar().show();
             //setNavItem(R.id.navhome);
-           // setTitleToHome();
+            // setTitleToHome();
             //MainActivity.toggleTutIcon(this,false);
             finish();
-        }
-        else if(mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT")!=null||mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT")!=null||mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT")!=null){
-            if(mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible()||mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible()||mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
+        } else if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT") != null) {
+            try {
+                if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
                 /*for(int i = 0; i < mFragmentManager.getBackStackEntryCount(); ++i) {
                     mFragmentManager.popBackStack();
                 }*/
-                //performClick(
-               // getSupport)FragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
-                finish();
-                startActivity(getIntent());
-                //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
-            }
+                    //performClick(
+                    // getSupport)FragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                    finish();
+                    startActivity(getIntent());
+                    //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
+                }
+            }catch (Exception e){}
 
         }
 
-               // getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+        // getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
 
 
-
-        else if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT")!=null){
-            if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
+        else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
+            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
                 finish();
         }
         super.onBackPressed();
@@ -333,7 +335,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return result;
     }
-    public static void updateNavProfilePic( final Context context){
+
+    public static void updateNavProfilePic(final Context context) {
         DocumentReference databaseReference = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid());
 
         databaseReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -348,34 +351,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        String link =  ProfileFragment.url;
+                        String link = ProfileFragment.url;
                         //Toast.makeText(getActivity(), link,Toast.LENGTH_LONG).show();
                         boolean customDP = (Boolean) documentSnapshot.get("CUSTOM_DP");
                         if (!glink.trim().equals("") && !customDP) {
                             //Glide.with(getBaseContext()).load("").thumbnail(0.5f).into(userImage);
                             Glide.with(context).load(glink).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
-                        } else if(!link.trim().equals("")){
+                        } else if (!link.trim().equals("")) {
                             Glide.with(context).load(link).apply(new RequestOptions().placeholder(R.drawable.def_user_icon).signature(new ObjectKey(System.currentTimeMillis()))).thumbnail(0.5f).thumbnail(0.5f).into(userImage);
                             // options = new RequestOptions().signature(new ObjectKey((sharedpreferences.getInt("DP_CHANGE_COUNTER",0))+2));
                             // Glide.with(context).load(link).apply(options).thumbnail(0.5f).into(userImage);
-                        }
-                        else {
+                        } else {
                             Glide.with(context).load(R.drawable.def_user_icon).thumbnail(0.5f).into(userImage);
                         }
                     }
-                },1000);
+                }, 1000);
             }
-        }) ;
+        });
 
 
     }
 
-    public static int getDpChangeCounter(){
-         return sharedpreferences.getInt("DP_CHANGE_COUNTER",0);
+    public static int getDpChangeCounter() {
+        return sharedpreferences.getInt("DP_CHANGE_COUNTER", 0);
     }
 
-    private void hideItem(int id)
-    {
+    private void hideItem(int id) {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nav_Menu = navigationView.getMenu();
         nav_Menu.findItem(id).setVisible(false);

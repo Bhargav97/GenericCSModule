@@ -38,7 +38,7 @@
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/guestPic"
+                    android:id="@+id/hostPicBD"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
@@ -62,13 +62,13 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginBottom="5dp"
-                            android:text="Requested by: "
+                            android:text="Hosted by: "
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/white"
                             android:textSize="15sp" />
 
                         <TextView
-                            android:id="@+id/nameTextCR"
+                            android:id="@+id/hostNameTextBD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start"
@@ -107,7 +107,7 @@
                         android:gravity="start"
                         android:padding="10dp"
                         android:layout_gravity="center_vertical"
-                        android:text="Couch Requested: "
+                        android:text="Couch alloted: "
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
@@ -119,7 +119,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/couchNameTextCR"
+                            android:id="@+id/couchNameTextBD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start"
@@ -130,7 +130,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/couchLocTextCR"
+                            android:id="@+id/couchLocTextBD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="start"
@@ -166,9 +166,7 @@
                         android:textSize="15sp" />
 
                     <TextView
-
-                        android:id="@+id/dateFromTextCR"
-
+                        android:id="@+id/dateFromTextBD"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -191,7 +189,7 @@
                         android:textSize="10sp"/>
 
                     <TextView
-                        android:id="@+id/dateToTextCR"
+                        android:id="@+id/dateToTextBD"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -222,13 +220,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:padding="10dp"
-                        android:text="Accommodation requested for: "
+                        android:text="Accommodation alloted for: "
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
                     <TextView
-                        android:id="@+id/accData"
+                        android:id="@+id/accDataBD"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -251,7 +249,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/globalRid"
+                        android:id="@+id/globalRidBD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"

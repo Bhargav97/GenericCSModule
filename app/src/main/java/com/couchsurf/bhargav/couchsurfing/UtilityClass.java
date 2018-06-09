@@ -2,6 +2,8 @@ package com.couchsurf.bhargav.couchsurfing;
 
 public class UtilityClass {
 
+    public static boolean fromStatus=false;
+
     public static String getUidFromUrl(String url) {
         int startIndex = url.lastIndexOf('/') + 1;
         int endIndex = url.lastIndexOf('.');

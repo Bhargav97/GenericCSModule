@@ -1,13 +1,17 @@
 package com.couchsurf.bhargav.couchsurfing;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -93,7 +98,9 @@ public class CouchReqDisplay extends Fragment {
     ArrayList reqMap;
     LinearLayout dynamicLL;
     ProgressBar progressBar;
-    Button approveButton, rejectButton;
+    Button approveButton, rejectButton, cancelButton;
+    boolean postDisplay = false;  //this flag being true means the req is approved and this fragment is being viewed in status section
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +122,7 @@ public class CouchReqDisplay extends Fragment {
         dynamicLL = v.findViewById(R.id.dynamicGuestView);
         approveButton = v.findViewById(R.id.approveButton);
         rejectButton = v.findViewById(R.id.denyButton);
+        cancelButton = v.findViewById(R.id.cancelButton);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -123,21 +131,36 @@ public class CouchReqDisplay extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
-        nameArrayStr=new ArrayList<>();
-        genderArrayStr=new ArrayList<>();
-        ageArrayStr=new ArrayList<>();
+
+        android.support.v7.widget.Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+
+        if (toolbar.getTitle().toString().trim().equals("Arrivals' Status")) {
+            cancelButton.setVisibility(View.VISIBLE);
+            rejectButton.setVisibility(View.GONE);
+            approveButton.setVisibility(View.GONE);
+        }else if(toolbar.getTitle().toString().trim().equals("Pending Requests' Status")){
+            cancelButton.setVisibility(View.GONE);
+            rejectButton.setVisibility(View.GONE);
+            approveButton.setVisibility(View.GONE);
+        }
+
+
+        db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTSEEN_KEY,true);
+        nameArrayStr = new ArrayList<>();
+        genderArrayStr = new ArrayList<>();
+        ageArrayStr = new ArrayList<>();
         db.collection("requests").document(getterSetterForCouchRequest.getGrid()).collection("guests").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for(QueryDocumentSnapshot document : task.getResult()){
+                        for (QueryDocumentSnapshot document : task.getResult()) {
                             nameArrayStr.add(document.get(GUEST_NAME_KEY).toString());
                             genderArrayStr.add(document.get(GUEST_GENDER_KEY).toString());
                             ageArrayStr.add(document.get(GUEST_AGE_KEY).toString());
                         }
                         progressBar.setVisibility(View.GONE);
-                        if(getActivity()!=null)
-                            generateAndPutLL(noOfGuests,getContext(),dynamicLL);
+                        if (getActivity() != null)
+                            generateAndPutLL(noOfGuests, getContext(), dynamicLL);
                     }
                 });
 
@@ -153,7 +176,31 @@ public class CouchReqDisplay extends Fragment {
                 approveGuest(false);
             }
         });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Are you sure?")
+                        .setMessage("Do you really want to cancel this deal?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                db.collection("requests").document(getterSetterForCouchRequest.getGrid()).delete();
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                                    }
+                                },2000);
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
+
+            }
+        });
         return v;
     }
 
@@ -168,7 +215,7 @@ public class CouchReqDisplay extends Fragment {
             );
 
             tv.setLayoutParams(paramstv);
-            tv.setPadding(40,10,40,10);
+            tv.setPadding(40, 10, 40, 10);
             tv.setText("Details of Guest #" + (j + 1));
             tv.setTextColor(context.getResources().getColor(R.color.white));
             tv.setTextSize(20f);
@@ -192,29 +239,29 @@ public class CouchReqDisplay extends Fragment {
 
 
             TextView nameText = new TextView(context);
-            nameText.setText("Name: "+ nameArrayStr.get(j));
+            nameText.setText("Name: " + nameArrayStr.get(j));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             params.setMargins(30, 30, 30, 10);
             nameText.setLayoutParams(params);
-            nameText.setPadding(10,10,10,10);
+            nameText.setPadding(10, 10, 10, 10);
             nameText.setTextSize(17f);
 
             TextView gender = new TextView(context);
-            gender.setText("Gender: "+ genderArrayStr.get(j));
+            gender.setText("Gender: " + genderArrayStr.get(j));
             LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             params2.setMargins(30, 10, 30, 10);
             gender.setLayoutParams(params2);
-            gender.setPadding(10,10,10,10);
+            gender.setPadding(10, 10, 10, 10);
             gender.setTextSize(17f);
 
             TextView ageText = new TextView(context);
-            ageText.setText("Age: "+ ageArrayStr.get(j));
+            ageText.setText("Age: " + ageArrayStr.get(j));
 
             LinearLayout.LayoutParams paramsage = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -222,7 +269,7 @@ public class CouchReqDisplay extends Fragment {
             );
             paramsage.setMargins(30, 10, 30, 40);
             ageText.setLayoutParams(paramsage);
-            ageText.setPadding(10,10,10,10);
+            ageText.setPadding(10, 10, 10, 10);
             ageText.setTextSize(17f);
             parent.addView(div);
             parent.addView(nameText);
@@ -234,14 +281,26 @@ public class CouchReqDisplay extends Fragment {
 
     }
 
-    public void approveGuest(boolean status){
+    public void approveGuest(boolean status) {
         //true is to approve and false to reject
-        if(status) {
-            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTAPPROVED_KEY,true);
-        }
-        else {
-            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTAPPROVED_KEY,true);
-
+        if (status) {
+            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTAPPROVED_KEY, true);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                }
+            },2000);
+        } else {
+            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTREJECTED_KEY, true);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                }
+            },2000);
         }
 
     }

@@ -43,6 +43,7 @@
             android:launchMode="singleTask"
             android:name=".ProfileScreen"
             android:theme="@style/AppTheme"/>
+        <activity android:name=".ExternalProfileViewActivity"/>
         <activity android:name=".RegisterNewCouch"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"/>

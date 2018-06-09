@@ -5,7 +5,9 @@
     android:background="#fafafa"
     android:id="@+id/mainLayoutCR">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
+        android:id="@+id/imgHeadingExplore"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

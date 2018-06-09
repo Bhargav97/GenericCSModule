@@ -33,6 +33,7 @@
             android:background="@color/colorPrimary" />
 
         <android.support.v7.widget.CardView
+            android:id="@+id/profieCardCRD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -61,6 +62,7 @@
                 <TextView
                     android:id="@+id/nameOfGuestCRD"
                     android:layout_width="0dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
@@ -244,6 +246,20 @@
                 android:paddingBottom="20dp"
                 android:paddingTop="20dp"
                 android:text="Approve" />
+            <Button
+                android:id="@+id/cancelButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:paddingBottom="20dp"
+                android:paddingTop="20dp"
+                android:text="Cancel the stay" />
+
             <Button
                 android:id="@+id/denyButton"
                 style="@style/Widget.AppCompat.Button.Colored"

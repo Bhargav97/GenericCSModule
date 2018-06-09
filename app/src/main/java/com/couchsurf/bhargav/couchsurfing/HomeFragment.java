@@ -50,12 +50,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         position=0;
         flagForAnim = false;
         arrayList.add("Hey," + " " + UNAME.substring(0, UNAME.indexOf(' ')) + "!");
-        arrayList.add("Let's Travel...");
-        arrayList.add("because...");
+        arrayList.add("Remember the earth is vaaaaast");
+        arrayList.add("Because there isn't enough of travelling");
         arrayList.add("Life is for travelling!");
-        arrayList.add("and while you're at it...");
-        arrayList.add("Meet amazing people...");
-        arrayList.add("...around the world!");
+        arrayList.add("Every person is a new experience");
+        arrayList.add("People are Awesome!");
+        arrayList.add("Give it a try!");
         welcome.animateText(arrayList.get(position));
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
@@ -123,24 +123,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch (USER_TYPE) {
             case 0:
                 showViewWithAnim(100, adminPanel);
-                showViewWithAnim(600,statusCard);
+                showViewWithAnim(400,statusCard);
                 couchReq.setVisibility(View.GONE);
                 manageCouches.setVisibility(View.GONE);
                 regNewCouch.setVisibility(View.GONE);
                 break;
             case 1:
                 showViewWithAnim(100, adminPanel);
-                showViewWithAnim(600,statusCard);
-                showViewWithAnim(1100,couchReq);
-                showViewWithAnim(1600, manageCouches);
-                showViewWithAnim(2100, regNewCouch);
+                showViewWithAnim(400,statusCard);
+                showViewWithAnim(700,couchReq);
+                showViewWithAnim(900, manageCouches);
+                showViewWithAnim(1100, regNewCouch);
                 break;
             case 2:
                 showViewWithAnim(100, adminPanel);
-                showViewWithAnim(600,statusCard);
-                showViewWithAnim(1100,couchReq);
-                showViewWithAnim(1600, manageCouches);
-                showViewWithAnim(2100, regNewCouch);
+                showViewWithAnim(400,statusCard);
+                showViewWithAnim(700,couchReq);
+                showViewWithAnim(900, manageCouches);
+                showViewWithAnim(1100, regNewCouch);
                 break;
         }
         return v;
@@ -159,6 +159,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.adminPanel:
                 //
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ExploreFragment(),"EF").addToBackStack(null).commit();
+                break;
+            case R.id.status:
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new StatusFragment(),"SF").commit();
+                break;
+
+            case R.id.couchReq:
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new CouchRequests(),"CR").addToBackStack(null).commit();
                 break;
 
         }
