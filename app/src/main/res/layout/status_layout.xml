@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:clickable="true"
+            android:visibility="gone"
+            android:id="@+id/arrivalsHeading"
+            android:text="Arrivals"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="0dp"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_color_primary"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:clickable="true"
+            android:text="Bookings"
+            android:textStyle="bold"
+            android:background="@drawable/ripple_color_primary"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:id="@+id/bookingsHeading"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:clickable="true"
+            android:text="Requests"
+            android:background="@drawable/ripple_color_primary"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/white"
+            android:textAllCaps="true"
+            android:id="@+id/requestsHeading"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+
+        <View
+            android:visibility="gone"
+            android:id="@+id/arrBottom"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="1dp"
+            android:background="@color/white"/>
+
+        <View
+            android:id="@+id/bookBottom"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:layout_height="1dp"/>
+        <View
+            android:id="@+id/reqBottom"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:layout_height="1dp"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/shadow_hack"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container_status"/>
+
+
+</LinearLayout>

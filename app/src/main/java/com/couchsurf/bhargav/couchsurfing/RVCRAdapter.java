@@ -41,7 +41,6 @@ public class RVCRAdapter extends RecyclerView.Adapter<RVCRAdapter.MyViewHolder>{
     public void onBindViewHolder(@NonNull RVCRAdapter.MyViewHolder holder, int position) {
         RVCouchReq current = data.get(position);
         Glide.with(holder.nameText.getContext()).load(current.url).apply(new RequestOptions().placeholder(R.drawable.ic_person).signature(new ObjectKey(System.currentTimeMillis()))).into(holder.guestPic);
-        holder.nameText.setText(current.name);
         holder.accText.setText("  "+current.accFor);
         holder.GRid.setText("ID# "+current.GRid);
         holder.fromDate.setText(current.fromDate);
@@ -49,7 +48,9 @@ public class RVCRAdapter extends RecyclerView.Adapter<RVCRAdapter.MyViewHolder>{
         holder.couchName.setText(current.couchName);
         holder.couchLoc.setText(current.couchLoc);
         if(current.hostSeen.trim().equals("false"))
-            holder.newText.setVisibility(View.VISIBLE);
+            holder.nameText.setText(current.name+" (NEW)");
+        else
+            holder.nameText.setText(current.name);
     }
 
     @Override
@@ -74,7 +75,7 @@ public class RVCRAdapter extends RecyclerView.Adapter<RVCRAdapter.MyViewHolder>{
             couchLoc = itemView.findViewById(R.id.couchLocTextCR);
             couchName = itemView.findViewById(R.id.couchNameTextCR);
             GRid = itemView.findViewById(R.id.globalRid);
-            newText = itemView.findViewById(R.id.newTextCR);
+            //newText = itemView.findViewById(R.id.newTextCR);
             itemView.setOnClickListener(this);
         }
 

@@ -66,7 +66,8 @@ public class CouchRequests extends Fragment {
     final public String REQUEST_ENDDATE_KEY = "Guests_Leave_On";
     final public String REQUEST_HOSTSEEN_KEY = "Host_Seen_Req";
     final public String REQUEST_GUEST_NAME_KEY = "Requested_By_Name";
-
+    final public String REQUEST_HOSTAPPROVED_KEY = "Host_Approved";
+    final public String REQUEST_HOSTREJECTED_KEY = "Host_Rejected";
     final public String GUEST_NAME_KEY = "Name_Of_Guest";
     final public String GUEST_GENDER_KEY = "Gender_Of_Guest";
     final public String GUEST_AGE_KEY = "Age_Of_Guest";
@@ -100,6 +101,8 @@ public class CouchRequests extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = getLayoutInflater().inflate(R.layout.couch_requests, container, false);
         mainLayout = v.findViewById(R.id.mainLayoutCR);
+        ((MainActivity) getActivity()).setActionBarTitle("Couch Requests");
+        ((MainActivity) getActivity()).setNavItem(R.id.navreq);
         noCouchTV = v.findViewById(R.id.noCouchTextViewCR);
         recyclerView = v.findViewById(R.id.cr_rv);
         markerProg = v.findViewById(R.id.marker_progressCR);
@@ -155,7 +158,7 @@ public class CouchRequests extends Fragment {
         toDateData = new ArrayList<>();
         hostSeenData = new ArrayList<>();
         mapOfRequests = new ArrayList<>();
-        db.collection("requests").whereEqualTo(COUCH_OWNER_UID_KEY, UID).get()
+        db.collection("requests").whereEqualTo(COUCH_OWNER_UID_KEY, UID).whereEqualTo(REQUEST_HOSTREJECTED_KEY,false).whereEqualTo(REQUEST_HOSTAPPROVED_KEY,false).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

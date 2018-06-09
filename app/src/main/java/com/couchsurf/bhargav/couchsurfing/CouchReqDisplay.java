@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -42,7 +43,8 @@ public class CouchReqDisplay extends Fragment {
     TextView heading;
     final private static String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private static String BOOKING_COUNTER_KEY = "No_Of_Bookings";
-
+    final public String REQUEST_HOSTAPPROVED_KEY = "Host_Approved";
+    final public String REQUEST_HOSTREJECTED_KEY = "Host_Rejected";
     final private static String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date"; //includes deleted
     final private static String COUCH_ID_KEY = "Couch_Id";
     final private static String COUCH_IMAGES_COUNTER_KEY = "No_Of_Images";
@@ -91,6 +93,7 @@ public class CouchReqDisplay extends Fragment {
     ArrayList reqMap;
     LinearLayout dynamicLL;
     ProgressBar progressBar;
+    Button approveButton, rejectButton;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -110,6 +113,8 @@ public class CouchReqDisplay extends Fragment {
         fromDate.setText(getterSetterForCouchRequest.getFromDate());
         toDate.setText(getterSetterForCouchRequest.getToDate());
         dynamicLL = v.findViewById(R.id.dynamicGuestView);
+        approveButton = v.findViewById(R.id.approveButton);
+        rejectButton = v.findViewById(R.id.denyButton);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -136,18 +141,23 @@ public class CouchReqDisplay extends Fragment {
                     }
                 });
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        approveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-
+            public void onClick(View v) {
+                approveGuest(true);
             }
-        },5000);
+        });
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                approveGuest(false);
+            }
+        });
 
         return v;
     }
 
-    public static void generateAndPutLL(int i, Context context, LinearLayout ll) {
+    public void generateAndPutLL(int i, Context context, LinearLayout ll) {
 
         for (int j = 0; j < i; j++) {
 
@@ -156,10 +166,13 @@ public class CouchReqDisplay extends Fragment {
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            paramstv.setMargins(30, 10, 30, 10);
+
             tv.setLayoutParams(paramstv);
+            tv.setPadding(40,10,40,10);
             tv.setText("Details of Guest #" + (j + 1));
-            tv.setTextColor(context.getResources().getColor(R.color.black));
+            tv.setTextColor(context.getResources().getColor(R.color.white));
+            tv.setTextSize(20f);
+            tv.setBackground(context.getResources().getDrawable(R.color.colorPrimary));
 
 
             LinearLayout parent = new LinearLayout(context);
@@ -169,14 +182,25 @@ public class CouchReqDisplay extends Fragment {
             ll.addView(parent);
             //children of parent linearlayout
 
+            View div = new View(context);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    2
+            );
+            div.setLayoutParams(layoutParams);
+            div.setBackground(getResources().getDrawable(R.color.black_overlay));
+
+
             TextView nameText = new TextView(context);
             nameText.setText("Name: "+ nameArrayStr.get(j));
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            params.setMargins(30, 10, 30, 10);
+            params.setMargins(30, 30, 30, 10);
             nameText.setLayoutParams(params);
+            nameText.setPadding(10,10,10,10);
+            nameText.setTextSize(17f);
 
             TextView gender = new TextView(context);
             gender.setText("Gender: "+ genderArrayStr.get(j));
@@ -186,7 +210,8 @@ public class CouchReqDisplay extends Fragment {
             );
             params2.setMargins(30, 10, 30, 10);
             gender.setLayoutParams(params2);
-
+            gender.setPadding(10,10,10,10);
+            gender.setTextSize(17f);
 
             TextView ageText = new TextView(context);
             ageText.setText("Age: "+ ageArrayStr.get(j));
@@ -195,14 +220,27 @@ public class CouchReqDisplay extends Fragment {
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            paramsage.setMargins(30, 10, 30, 10);
+            paramsage.setMargins(30, 10, 30, 40);
             ageText.setLayoutParams(paramsage);
-
-
+            ageText.setPadding(10,10,10,10);
+            ageText.setTextSize(17f);
+            parent.addView(div);
             parent.addView(nameText);
             parent.addView(gender);
             parent.addView(ageText);
 
+
+        }
+
+    }
+
+    public void approveGuest(boolean status){
+        //true is to approve and false to reject
+        if(status) {
+            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTAPPROVED_KEY,true);
+        }
+        else {
+            db.collection("requests").document(getterSetterForCouchRequest.getGrid()).update(REQUEST_HOSTAPPROVED_KEY,true);
 
         }
 

@@ -101,7 +101,8 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     final public String REQUEST_STARTDATE_KEY = "Arrival_Of_Guests_On";
     final public String REQUEST_ENDDATE_KEY = "Guests_Leave_On";
     final public String REQUEST_HOSTSEEN_KEY = "Host_Seen_Req";
-
+    final public String REQUEST_HOSTAPPROVED_KEY = "Host_Approved";
+    final public String REQUEST_HOSTREJECTED_KEY = "Host_Rejected";
     final public String GUEST_NAME_KEY = "Name_Of_Guest";
     final public String GUEST_GENDER_KEY = "Gender_Of_Guest";
     final public String GUEST_AGE_KEY = "Age_Of_Guest";
@@ -220,6 +221,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = getLayoutInflater().inflate(R.layout.explore_couch_display, container, false);
         progressBar = v.findViewById(R.id.marker_progressECD);
+
         img1 = v.findViewById(R.id.img1Explore);
         img2 = v.findViewById(R.id.img2Explore);
         img3 = v.findViewById(R.id.img3Explore);
@@ -498,6 +500,8 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
                                 hashMap.put(REQUEST_STARTDATE_KEY,fromDate.getText().toString());
                                 hashMap.put(REQUEST_ENDDATE_KEY,toDate.getText().toString());
                                 hashMap.put(REQUEST_HOSTSEEN_KEY,false);
+                                hashMap.put(REQUEST_HOSTAPPROVED_KEY,false);
+                                hashMap.put(REQUEST_HOSTREJECTED_KEY,false);
                                 hashMap.put(REQUEST_GUEST_NAME_KEY,UNAME);
                                 db.collection("requests").document(Integer.toString(current_global_req_counter + 1)).set(hashMap);
                                 db.collection("metadata").document("request").update(REQUEST_GLOBAL_COUNTER_KEY, (current_global_req_counter+1));

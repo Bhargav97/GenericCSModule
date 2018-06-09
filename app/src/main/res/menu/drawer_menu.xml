@@ -7,14 +7,16 @@
             android:id="@+id/navhome"
             android:icon="@drawable/ic_home"
             android:title="Home" />
-        <item
-            android:id="@+id/navexplore"
-            android:icon="@drawable/ic_explore"
-            android:title="Explore" />
+
         <item
             android:id="@+id/navprofile"
             android:icon="@drawable/ic_profile"
             android:title="Your Profile" />
+        <item
+            android:id="@+id/navexplore"
+            android:icon="@drawable/ic_explore"
+            android:title="Explore Locations" />
+
         <item
             android:id="@+id/navstatus"
             android:icon="@drawable/ic_status"
@@ -26,11 +28,11 @@
         <item
             android:id="@+id/navmanage"
             android:icon="@drawable/ic_edit"
-            android:title="Manage your Couches" />
+            android:title="Manage Couches" />
 
         <item
             android:id="@+id/navadmin"
-            android:icon="@drawable/ic_edit"
+            android:icon="@drawable/ic_admin"
             android:title="Ghastly things" />
 
     </group>

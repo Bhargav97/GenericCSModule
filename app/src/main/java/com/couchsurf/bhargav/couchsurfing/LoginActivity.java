@@ -232,7 +232,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot doc = task.getResult();
                                 int type = Integer.parseInt( doc.get("User_Type").toString());
-                                int pr = Integer.parseInt( doc.get("Pending_Requests").toString());
+                                //int pr = Integer.parseInt( doc.get("Pending_Requests").toString());
                                 //Toast.makeText(LoginActivity.this,"Found- "+type,Toast.LENGTH_LONG).show();
                                 if(type==1) {
                                     editor.putInt("USER_TYPE", 1);
@@ -248,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 int DP_COUNT = Math.round((Long)doc.get("DP_CHANGE_COUNT"));
                                 editor.putInt("DP_CHANGE_COUNTER",DP_COUNT);
-                                editor.putInt("PENDING_REQUESTS",pr);
+                                //editor.putInt("PENDING_REQUESTS",pr);
                                 editor.commit();
                             }
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));

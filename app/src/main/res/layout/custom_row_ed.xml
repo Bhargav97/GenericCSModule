@@ -2,66 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="10dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/couchOwnerPic"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
         android:layout_gravity="center_vertical"
-        android:id="@+id/couchOwnerPic"/>
+        android:layout_marginEnd="15dp"
+        android:layout_marginStart="15dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/nameTextExplore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="25dp"
             android:gravity="start"
+            android:padding="25dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
             android:textSize="20sp"
-            android:textColor="@color/black"/>
+            android:textStyle="bold" />
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:drawableLeft="@drawable/ic_people"
                 android:id="@+id/vacancyData"
-                android:gravity="start"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_people"
+                android:gravity="start"
+                android:paddingBottom="10dp"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
                 android:paddingTop="5dp"
-                android:layout_weight="1"
-                android:paddingBottom="10dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="15sp"
-                android:textColor="@color/black_overlay"/>
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
             <TextView
-                android:fontFamily="sans-serif-condensed"
                 android:id="@+id/globalCid"
-                android:textAllCaps="true"
-                android:gravity="end"
-                android:layout_gravity="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="end"
+                android:paddingBottom="10dp"
                 android:paddingLeft="25dp"
                 android:paddingRight="25dp"
                 android:paddingTop="5dp"
-                android:paddingBottom="10dp"
+                android:textAllCaps="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="10sp"
-                android:textColor="@color/black_overlay"/>
+                android:textColor="@color/black"
+                android:textSize="10sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
 </LinearLayout>
+

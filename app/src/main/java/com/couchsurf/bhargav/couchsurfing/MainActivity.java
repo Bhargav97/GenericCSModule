@@ -256,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new ProfileFragment(),"PROFILE_FRAGMENT").addToBackStack(null).commit();
                 //startActivity(new Intent(MainActivity.this,ProfileScreen.class));
                 break;
+            case R.id.navstatus:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new StatusFragment(),"STATUS_FRAGMENT").addToBackStack(null).commit();
+
+                break;
             case R.id.navsettings:
                 Toast.makeText(this, "Really dude?",
                         Toast.LENGTH_LONG).show();
@@ -296,6 +300,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //MainActivity.toggleTutIcon(this,false);
             finish();
         }
+        else if(mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT")!=null||mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT")!=null||mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT")!=null){
+            if(mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible()||mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible()||mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
+                /*for(int i = 0; i < mFragmentManager.getBackStackEntryCount(); ++i) {
+                    mFragmentManager.popBackStack();
+                }*/
+                //performClick(
+               // getSupport)FragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                finish();
+                startActivity(getIntent());
+                //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+               // getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
+
+
+
         else if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT")!=null){
             if(mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
                 finish();
