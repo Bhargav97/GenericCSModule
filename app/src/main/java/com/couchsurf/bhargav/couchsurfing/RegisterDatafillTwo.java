@@ -84,6 +84,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     final private String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private String BOOKING_COUNTER_KEY = "No_Of_Bookings";
 
+    final private String COUCH_OWNER_UNAME_KEY = "Couch_Owner_Name";
     final private String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date"; //includes deleted
     final private String COUCH_ID_KEY = "Couch_Id";
     final private String COUCH_IMAGES_COUNTER_KEY = "No_Of_Images";
@@ -106,7 +107,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
     static FirebaseAuth mAuth;
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
-    static public String UID;
+    static public String UID, UNAME;
     static SharedPreferences sharedpreferences;
     final static private String COUCHFOLDER = "s3Folder/couchPics/";
     final static private String EXT = ".jpg";
@@ -176,6 +177,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     current_couch_id_counter = Math.round((Long) doc.get(COUCH_ID_COUNTER_KEY));
                     current_couch_counter = Math.round((Long) doc.get(COUCHCOUNTER_KEY));
+                    UNAME = doc.get(NAME_KEY).toString();
                     //Toast.makeText(getActivity(),Integer.toString(current_couch_counter),Toast.LENGTH_LONG).show();
                     editor.putInt(COUCHCOUNTER_KEY, current_couch_counter);
                     editor.commit();
@@ -267,6 +269,7 @@ public class RegisterDatafillTwo extends Fragment implements View.OnClickListene
         hashMap.put(COUCH_ID_KEY,(current_couch_id_counter+1));
         hashMap.put(COUCH_IMAGES_COUNTER_KEY, current_couch_images_counter);
         hashMap.put(COUCH_OWNER_UID_KEY, UID);
+        hashMap.put(COUCH_OWNER_UNAME_KEY, UNAME);
         hashMap.put(COUCH_GLOBAL_ID_KEY,(global_couch_counter+1));
         db.collection("users").document(UID).collection("couches").document(Integer.toString(current_couch_counter + 1)).set(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

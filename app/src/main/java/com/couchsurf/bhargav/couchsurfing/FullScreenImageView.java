@@ -44,11 +44,11 @@ public class FullScreenImageView extends AppCompatActivity {
         PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(photoView);
         photoViewAttacher.update();*/
 
-    }
-
-    @Override
+    }@Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
+
+
 }

@@ -67,6 +67,8 @@ public class RequestsFragment extends Fragment {
     final public String GUEST_NAME_KEY = "Name_Of_Guest";
     final public String GUEST_GENDER_KEY = "Gender_Of_Guest";
     final public String GUEST_AGE_KEY = "Age_Of_Guest";
+    final private String COUCH_OWNER_UNAME_KEY = "Couch_Owner_Name";
+
 
 
     static TextView noCouchTV;
@@ -161,7 +163,7 @@ public class RequestsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 mapOfRequests.add(document.getData());
-                                nameData.add("Filler");
+                                nameData.add(document.get(COUCH_OWNER_UNAME_KEY).toString());
                                 couchNameData.add(document.get(COUCH_NAME_KEY).toString());
                                 couchLocData.add(document.get(COUCH_CITY_KEY).toString() + ", " + document.get(COUCH_STATE_KEY).toString() + ", " + document.get(COUCH_COUNTRY_KEY).toString());
                                 urlData.add(UtilityClass.returnUrlForUid(document.get(REQUEST_GUEST_ID_KEY).toString()));
@@ -174,7 +176,7 @@ public class RequestsFragment extends Fragment {
                                 Log.d("TAG", document.getId() + " => " + document.getData());
                             }
                             if (noOfFoundReq == 0) {
-                                noCouchTV.setText("No Requests yet");
+                                noCouchTV.setText("No pending requests as of now");
                                 markerProg.setVisibility(View.GONE);
                             } else {
                                 for (int i = 0; i < noOfFoundReq; i++) {

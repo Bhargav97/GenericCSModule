@@ -37,6 +37,7 @@ public class BookingsFragment extends Fragment {
     TextView heading;
     final private static String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private static String BOOKING_COUNTER_KEY = "No_Of_Bookings";
+    final private String COUCH_OWNER_UNAME_KEY = "Couch_Owner_Name";
 
     final private static String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date"; //includes deleted
     final private static String COUCH_ID_KEY = "Couch_Id";
@@ -162,7 +163,7 @@ public class BookingsFragment extends Fragment {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 mapOfRequests.add(document.getData());
-                                nameData.add("Filler");
+                                nameData.add(document.get(COUCH_OWNER_UNAME_KEY).toString());
                                 couchNameData.add(document.get(COUCH_NAME_KEY).toString());
                                 couchLocData.add(document.get(COUCH_CITY_KEY).toString() + ", " + document.get(COUCH_STATE_KEY).toString() + ", " + document.get(COUCH_COUNTRY_KEY).toString());
                                 urlData.add(UtilityClass.returnUrlForUid(document.get(REQUEST_GUEST_ID_KEY).toString()));

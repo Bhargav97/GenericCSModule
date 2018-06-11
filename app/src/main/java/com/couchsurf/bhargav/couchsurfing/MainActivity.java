@@ -301,6 +301,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // setTitleToHome();
             //MainActivity.toggleTutIcon(this,false);
             finish();
+        } else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
+            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
+                finish();
+            else
+                super.onBackPressed();
         } else if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT") != null) {
             try {
                 if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
@@ -313,18 +318,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(getIntent());
                     //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
                 }
-            }catch (Exception e){}
+                else
+                    super.onBackPressed();
+            } catch (Exception e) {
+            }
 
-        }
-
-        // getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container,new HomeFragment(),"HOME_FRAGMENT").addToBackStack(null).commit();
-
-
-        else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
-            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
-                finish();
-        }
-        super.onBackPressed();
+        } else super.onBackPressed();
     }
 
     public int getStatusBarHeight() {

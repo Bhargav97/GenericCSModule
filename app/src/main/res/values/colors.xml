@@ -35,4 +35,6 @@
     <color name="tint">#6F000000</color>
     <color name="red">#ee1111</color>
     <color name="lightsalmon">#FFA07A</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
 </resources>

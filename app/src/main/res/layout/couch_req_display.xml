@@ -274,7 +274,7 @@
                 android:text="Deny" />
 
             <ProgressBar
-                android:id="@+id/marker_progressECD"
+                android:id="@+id/marker_progressCRD2"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="20dp"
                 android:layout_height="20dp"

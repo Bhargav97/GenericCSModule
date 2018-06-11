@@ -43,10 +43,10 @@
             android:launchMode="singleTask"
             android:name=".ProfileScreen"
             android:theme="@style/AppTheme"/>
-        <activity android:name=".ExternalProfileViewActivity"/>
         <activity android:name=".RegisterNewCouch"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"/>
+        <activity android:name=".ExternalProfileViewActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:name=".FullScreenImageView" android:theme="@style/transImgViewTheme"/>
         <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />
         <provider

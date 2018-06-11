@@ -134,7 +134,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     public static String currentHostUrl;
     public static String currentHostName;
     public static String currentGcid;
-    CardView dateCard, accCard, dataFillCard;
+    CardView dateCard, accCard, dataFillCard, hostProfileCard;
     Button reqButton, submitAcc;
     Calendar calendarFrom, calendarTo;
     static EditText fromDate;
@@ -249,6 +249,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         fromDate.setInputType(InputType.TYPE_NULL);
         toDate.setInputType(InputType.TYPE_NULL);
         accCard = v.findViewById(R.id.accCard);
+        hostProfileCard = v.findViewById(R.id.hostProfileCard);
         decAdults = v.findViewById(R.id.decAdultsExplore);
         incAdults = v.findViewById(R.id.incAdultsExplore);
         submitAcc = v.findViewById(R.id.submitAcc);
@@ -623,6 +624,7 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
         img6.setOnClickListener(this);
         decAdults.setOnClickListener(this);
         incAdults.setOnClickListener(this);
+        hostProfileCard.setOnClickListener(this);
         return v;
     }
     public static boolean dateMistmatch() {
@@ -671,6 +673,9 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
+            case R.id.hostProfileCard:
+                startActivity(new Intent(getActivity(), ExternalProfileViewActivity.class).putExtra("UID",currentUid));
+                break;
             case R.id.decAdultsExplore:
                 noOfGuests = Integer.parseInt(accText.getText().toString());
                 if (noOfGuests == 1) {

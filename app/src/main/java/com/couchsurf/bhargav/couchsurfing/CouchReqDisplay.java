@@ -97,7 +97,7 @@ public class CouchReqDisplay extends Fragment {
     String guestImgUrl;
     ArrayList reqMap;
     LinearLayout dynamicLL;
-    ProgressBar progressBar;
+    ProgressBar progressBar, progMini;
     Button approveButton, rejectButton, cancelButton;
     boolean postDisplay = false;  //this flag being true means the req is approved and this fragment is being viewed in status section
 
@@ -123,6 +123,7 @@ public class CouchReqDisplay extends Fragment {
         approveButton = v.findViewById(R.id.approveButton);
         rejectButton = v.findViewById(R.id.denyButton);
         cancelButton = v.findViewById(R.id.cancelButton);
+        progMini = v.findViewById(R.id.marker_progressCRD2);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -167,12 +168,14 @@ public class CouchReqDisplay extends Fragment {
         approveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progMini.setVisibility(View.VISIBLE);
                 approveGuest(true);
             }
         });
         rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progMini.setVisibility(View.VISIBLE);
                 approveGuest(false);
             }
         });
@@ -181,11 +184,12 @@ public class CouchReqDisplay extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Are you sure?")
-                        .setMessage("Do you really want to cancel this deal?")
+                        .setMessage("Do you really want to cancel on this guest?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
+                                progMini.setVisibility(View.VISIBLE);
                                 db.collection("requests").document(getterSetterForCouchRequest.getGrid()).delete();
                                 Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
