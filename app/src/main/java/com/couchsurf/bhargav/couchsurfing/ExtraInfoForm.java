@@ -50,6 +50,12 @@ public class ExtraInfoForm extends AppCompatActivity {
             window.setStatusBarColor(activity.getResources().getColor(id));
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

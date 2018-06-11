@@ -66,7 +66,7 @@
 
             <EditText
                 android:id="@+id/phone"
-                android:inputType="number"
+                android:inputType="none"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"

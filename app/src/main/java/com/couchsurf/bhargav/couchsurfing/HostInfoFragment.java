@@ -7,10 +7,12 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -60,6 +62,7 @@ public class HostInfoFragment extends Fragment {
         submitButton = v.findViewById(R.id.submitButton);
         mAuth = FirebaseAuth.getInstance();
         phoneInput = v.findViewById(R.id.phone);
+        phoneInput.setInputType(InputType.TYPE_NULL);
         addressInput = v.findViewById(R.id.address);
         nameInput = v.findViewById(R.id.name);
         cityInput = v.findViewById(R.id.city);
@@ -196,14 +199,14 @@ public class HostInfoFragment extends Fragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(), "User Registered",
+                                    Toast.makeText(getContext(), "User Registered",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "ERROR" + e.toString(),
+                                    Toast.makeText(getContext(), "ERROR" + e.toString(),
                                             Toast.LENGTH_SHORT).show();
                                     Log.d("TAG", e.toString());
                                 }
@@ -218,6 +221,7 @@ public class HostInfoFragment extends Fragment {
                     editor.putInt("PENDING_REQUESTS",0);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
+                    getActivity().finish();
                 }
 
             }

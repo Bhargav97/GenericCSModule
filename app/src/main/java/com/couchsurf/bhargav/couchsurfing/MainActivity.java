@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseUser = mAuth.getCurrentUser();
         //Go to your specific database directory or Child
         DocumentReference databaseReference = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid());
+        Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
         //Connect the views of navigation bar
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUserName);
@@ -304,6 +305,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
             if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
                 finish();
+            else if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT") != null) {
+                try {
+                    if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
+                /*for(int i = 0; i < mFragmentManager.getBackStackEntryCount(); ++i) {
+                    mFragmentManager.popBackStack();
+                }*/
+                        //performClick(
+                        // getSupport)FragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+                        //finish();
+                        //startActivity(getIntent());
+                        getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+
+                        //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
+                    } else
+                        super.onBackPressed();
+                }catch (Exception e) {
+                }
+            }
             else
                 super.onBackPressed();
         } else if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT") != null) {
@@ -314,8 +333,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }*/
                     //performClick(
                     // getSupport)FragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
-                    finish();
-                    startActivity(getIntent());
+                    //finish();
+                    //startActivity(getIntent());
+                    getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out).replace(R.id.fragment_container, new HomeFragment(), "HOME_FRAGMENT").addToBackStack(null).commit();
+
                     //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
                 }
                 else

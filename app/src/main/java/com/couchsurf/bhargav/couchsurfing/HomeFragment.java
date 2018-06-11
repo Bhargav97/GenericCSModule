@@ -49,7 +49,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void setWelcomeText() {
         position=0;
         flagForAnim = false;
-        arrayList.add("Hey," + " " + UNAME.substring(0, UNAME.indexOf(' ')) + "!");
+        if(UNAME.trim().contains(" "))
+            arrayList.add("Hey," + " " + UNAME.substring(0, UNAME.indexOf(' ')) + "!");
+        else
+            arrayList.add("Hey," + " " + UNAME + "!");
         arrayList.add("Remember the earth is vaaaaast");
         arrayList.add("Because there isn't enough of travelling");
         arrayList.add("Life is for travelling!");

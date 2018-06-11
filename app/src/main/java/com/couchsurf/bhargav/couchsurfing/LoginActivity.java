@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w("TAG", "signInWithEmail:failure", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                        Toast.makeText(LoginActivity.this, "Invalid Credentials. If you are a new user, please register first. ",
                                                 Toast.LENGTH_SHORT).show();
                                         //updateUI(null);
                                     }
@@ -206,8 +206,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void updateUI(FirebaseUser user) {
-        final String uid =user.getUid();
+    private void updateUI(final FirebaseUser user) {
+
+
+        //Toast.makeText(LoginActivity.this,"SOMETHING WENT WRONG",Toast.LENGTH_LONG).show();
+
+        /*final String uid =user.getUid();
         DocumentReference docRef = db.collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -217,8 +221,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.e("TAG", "Exits");
                     SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     final SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putBoolean("SIGNED_IN", true);
-                    editor.commit();
+
                     editor.putString("UID",uid);
                     editor.commit();
 
@@ -251,7 +254,15 @@ public class LoginActivity extends AppCompatActivity {
                                 //editor.putInt("PENDING_REQUESTS",pr);
                                 editor.commit();
                             }
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            //Put users who are whitelisted to access without PhoneAuth in here
+                            if(user.getUid().trim().equals("")){
+
+                            }else {
+                                Intent i = new Intent(LoginActivity.this, PhoneAuth.class);
+                                i.putExtra("new", "no");
+                                // startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                startActivity(i);
+                            }
                             finish();
 
                         }
@@ -268,12 +279,19 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     Log.e("TAG", "Does Not Exits");
-                    startActivity(new Intent(LoginActivity.this, ExtraInfoForm.class));
+                    Intent i = new Intent(LoginActivity.this, PhoneAuth.class);
+                    i.putExtra("new", "yes");
+                    startActivity(i);
                     finish();
 
                 }
             }
-        });
+        });*/
+
+        String email = user.getEmail();
+        Intent i = new Intent(LoginActivity.this, PhoneAuth.class);
+        i.putExtra("email",email);
+        startActivity(i);
 
 
     }

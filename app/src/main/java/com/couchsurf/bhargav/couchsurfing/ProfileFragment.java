@@ -254,7 +254,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         typeTitle = v.findViewById(R.id.typeTitle);
         descEdit = v.findViewById(R.id.descEditButton);
         nameEdit = v.findViewById(R.id.nameEditButton);
-        numberEdit = v.findViewById(R.id.phoneEditButton);
+        //numberEdit = v.findViewById(R.id.phoneEditButton);
         ageEdit = v.findViewById(R.id.ageEditButton);
         addressEdit = v.findViewById(R.id.addressEditButton);
         cityEdit = v.findViewById(R.id.cityEditButton);
@@ -262,7 +262,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         countryEdit = v.findViewById(R.id.countryEditButton);
         descDone = v.findViewById(R.id.descDoneButton);
         nameDone = v.findViewById(R.id.nameDoneButton);
-        numberDone = v.findViewById(R.id.phoneDoneButton);
+        //numberDone = v.findViewById(R.id.phoneDoneButton);
         ageDone = v.findViewById(R.id.ageDoneButton);
         addressDone = v.findViewById(R.id.addressDoneButton);
         cityDone = v.findViewById(R.id.cityDoneButton);
@@ -325,7 +325,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 });
         descEdit.setOnClickListener(this);
         nameEdit.setOnClickListener(this);
-        numberEdit.setOnClickListener(this);
+        //numberEdit.setOnClickListener(this);
         ageEdit.setOnClickListener(this);
         cityEdit.setOnClickListener(this);
         stateEdit.setOnClickListener(this);
@@ -333,7 +333,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         addressEdit.setOnClickListener(this);
         descDone.setOnClickListener(this);
         nameDone.setOnClickListener(this);
-        numberDone.setOnClickListener(this);
+        //numberDone.setOnClickListener(this);
         ageDone.setOnClickListener(this);
         addressDone.setOnClickListener(this);
         cityDone.setOnClickListener(this);
@@ -456,13 +456,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
                 break;
-            case R.id.phoneEditButton:
+            /*case R.id.phoneEditButton:
                 numberEdited = true;
                 number.setInputType(InputType.TYPE_CLASS_PHONE);
                 number.requestFocus();
                 imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(number, InputMethodManager.SHOW_IMPLICIT);
-                break;
+                break;*/
             case R.id.addressEditButton:
                 addressEdited = true;
                 address.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -522,7 +522,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     updateDoc.update(NAME_KEY, nameText);
                 }
                 break;
-            case R.id.phoneDoneButton:
+            /*case R.id.phoneDoneButton:
                 if (numberEdited) {
                     imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
@@ -531,7 +531,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     number.setInputType(InputType.TYPE_NULL);
                     updateDoc.update(PHONE_KEY, phoneNumber);
                 }
-                break;
+                break;*/
             case R.id.ageDoneButton:
                 if (ageEdited) {
                     imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

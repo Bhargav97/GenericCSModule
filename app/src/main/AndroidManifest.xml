@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <application
@@ -46,6 +48,9 @@
         <activity android:name=".RegisterNewCouch"
             android:theme="@style/AppTheme"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".PhoneAuth"/>
+<activity android:name=".VeifyPhoneAuth"/>
         <activity android:name=".ExternalProfileViewActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:name=".FullScreenImageView" android:theme="@style/transImgViewTheme"/>
         <service android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService" android:enabled="true" />
