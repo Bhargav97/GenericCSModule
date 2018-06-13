@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         arrayList.add("People are Awesome!");
         arrayList.add("Give it a try!");
         welcome.animateText(arrayList.get(position));
-        final Handler handler = new Handler();
+        final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable(){
             public void run(){
 

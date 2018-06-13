@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +68,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
 
         }
         else {
+            arrBottom.setVisibility(View.GONE);
+            arrBottom.setLayoutParams(new LinearLayout.LayoutParams(0,0));
             makeDull(arrivalHeading,arrBottom);
             makeDull(requestHeading,reqBottom);
             makeBright(bookingHeading,bookBottom);

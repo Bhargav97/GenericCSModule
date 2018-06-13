@@ -176,7 +176,7 @@ public class BookingsFragment extends Fragment {
                                 Log.d("TAG", document.getId() + " => " + document.getData());
                             }
                             if (noOfFoundReq == 0) {
-                                noCouchTV.setText("No Requests yet");
+                                noCouchTV.setText("No Bookings yet, Explore and Book!");
                                 markerProg.setVisibility(View.GONE);
                             } else {
                                 for (int i = 0; i < noOfFoundReq; i++) {
