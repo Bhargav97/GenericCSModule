@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,6 +100,7 @@ public class CouchReqDisplay extends Fragment {
     LinearLayout dynamicLL;
     ProgressBar progressBar, progMini;
     Button approveButton, rejectButton, cancelButton;
+    CardView profileCard;
     boolean postDisplay = false;  //this flag being true means the req is approved and this fragment is being viewed in status section
 
     @Nullable
@@ -124,6 +126,7 @@ public class CouchReqDisplay extends Fragment {
         rejectButton = v.findViewById(R.id.denyButton);
         cancelButton = v.findViewById(R.id.cancelButton);
         progMini = v.findViewById(R.id.marker_progressCRD2);
+        profileCard = v.findViewById(R.id.profileCardCRD);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         if (sharedpreferences.getString("UID", "").trim().equals(""))
             Toast.makeText(getActivity(), "Error retrieving UID", Toast.LENGTH_LONG).show();
@@ -203,6 +206,13 @@ public class CouchReqDisplay extends Fragment {
                         })
                         .setNegativeButton(android.R.string.no, null).show();
 
+            }
+        });
+
+        profileCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ExternalProfileViewActivity.class).putExtra("UID",getterSetterForCouchRequest.getGuestUID()));
             }
         });
         return v;

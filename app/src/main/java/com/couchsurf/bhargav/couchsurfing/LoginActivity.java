@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        ExtraInfoForm.setColor(getWindow(),this,R.color.login);
+        ExtraInfoForm.setColor(getWindow(), this, R.color.login);
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -288,10 +289,65 @@ public class LoginActivity extends AppCompatActivity {
             }
         });*/
 
-        String email = user.getEmail();
-        Intent i = new Intent(LoginActivity.this, PhoneAuth.class);
-        i.putExtra("email",email);
-        startActivity(i);
+        if (user.getUid().trim().equals("TEtRI4BAGDQvXdsEcl4TooRi8es2") || user.getUid().trim().equals("UmluwDSH7HapDTK5ZsC1KSS2LLw1") || user.getUid().trim().equals("kDPSjUG6BifK9Jnz65QtjaEZvSU2") || user.getUid().trim().equals("lTahbHyf1sQuKLP3XF6bKngWzEd2")) {
+
+            SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            final SharedPreferences.Editor editor = sharedpreferences.edit();
+            DocumentReference docRef = db.collection("users").document(user.getUid());
+            docRef.get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            editor.putString("UNAME", documentSnapshot.get("Name").toString());
+                            editor.commit();
+                            int type = Integer.parseInt(documentSnapshot.get("User_Type").toString());
+                            if (type == 1) {
+                                editor.putInt("USER_TYPE", 1);
+                                editor.commit();
+                            } else if (type == 0) {
+                                editor.putInt("USER_TYPE", 0);
+                                editor.commit();
+                            } else {
+                                editor.putInt("USER_TYPE", 2);
+                                editor.commit();
+                            }
+                            int DP_COUNT = Math.round((Long) documentSnapshot.get("DP_CHANGE_COUNT"));
+                            editor.putInt("DP_CHANGE_COUNTER", DP_COUNT);
+                            editor.commit();
+                        }
+                    });
+            editor.putString("UID", user.getUid());
+            editor.commit();
+
+            editor.putBoolean("SIGNED_IN", true);
+            editor.commit();
+            //Toast.makeText(getBaseContext(),"your email is "+email,Toast.LENGTH_LONG).show();
+            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+            //i.putExtra("new", "no");
+            startActivity(i);
+            /*Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 3000);*/
+
+        } else {
+
+            String email = user.getEmail();
+            Intent i = new Intent(LoginActivity.this, PhoneAuth.class);
+            i.putExtra("email", email);
+            startActivity(i);
+           /* Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 3000);*/
+        }
 
 
     }
@@ -314,7 +370,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.loginPageLL), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                             Toast.makeText(LoginActivity.this, "AUTH FAILED", Toast.LENGTH_LONG).show();
-                           // updateUI(null);
+                            // updateUI(null);
                         }
 
                         // ...

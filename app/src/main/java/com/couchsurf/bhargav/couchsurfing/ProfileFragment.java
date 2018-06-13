@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     final static private String FOLDER = "s3Folder/userIcons/";
     final static private String EXT = ".jpg";
     static FirebaseAuth mAuth;
+    TextView extProfile;
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
     final private int PICKFILE_RESULT_CODE = 2; //just a req code
@@ -233,6 +234,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         ((MainActivity) getActivity()).setActionBarTitle("Profile Setup");
         ((MainActivity) getActivity()).setNavItem(R.id.navprofile);
         mainLayout = v.findViewById(R.id.mainLayoutPL);
+        extProfile = v.findViewById(R.id.extProfile);
         sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
         Uid = sharedpreferences.getString("UID", "");
         profileImage = v.findViewById(R.id.userProfileImage);
@@ -284,10 +286,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         state.setInputType(InputType.TYPE_NULL);
         country.setInputType(InputType.TYPE_NULL);
         address.setInputType(InputType.TYPE_NULL);
+        extProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ExternalProfileViewActivity.class).putExtra("UID",Uid));
+
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         Uid = firebaseUser.getUid();
+        Toast.makeText(getActivity().getBaseContext(),"your email is "+firebaseUser.getEmail(),Toast.LENGTH_LONG).show();
         updateProfilePic(profileImage);
         DocumentReference user = db.collection("users").document(Uid);
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -213,58 +213,59 @@ public class VeifyPhoneAuth extends AppCompatActivity {
                             sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                             final SharedPreferences.Editor editor = sharedpreferences.edit();
 
-                            editor.putString("UID",user.getUid());
+                            editor.putString("UID", user.getUid());
                             editor.commit();
-                            editor.putString("UNAME",documentSnapshot.get("Name").toString());
+                            editor.putString("UNAME", documentSnapshot.get("Name").toString());
                             editor.commit();
-                            int type = Integer.parseInt( documentSnapshot.get("User_Type").toString());
-                            if(type==1) {
+                            int type = Integer.parseInt(documentSnapshot.get("User_Type").toString());
+                            if (type == 1) {
                                 editor.putInt("USER_TYPE", 1);
                                 editor.commit();
-                            }
-                            else if(type==0) {
+                            } else if (type == 0) {
                                 editor.putInt("USER_TYPE", 0);
                                 editor.commit();
-                            }
-                            else {
+                            } else {
                                 editor.putInt("USER_TYPE", 2);
                                 editor.commit();
                             }
-                            int DP_COUNT = Math.round((Long)documentSnapshot.get("DP_CHANGE_COUNT"));
-                            editor.putInt("DP_CHANGE_COUNTER",DP_COUNT);
+                            int DP_COUNT = Math.round((Long) documentSnapshot.get("DP_CHANGE_COUNT"));
+                            editor.putInt("DP_CHANGE_COUNTER", DP_COUNT);
                             editor.commit();
-                            editor.putBoolean("SIGNED_IN",true);
+                            editor.putBoolean("SIGNED_IN", true);
                             editor.commit();
-                            user.updateEmail(email);
+                            editor.putString("UEMAIL", email);
+                            editor.commit();
                             //Toast.makeText(getBaseContext(),"your email is "+email,Toast.LENGTH_LONG).show();
                             Intent i = new Intent(VeifyPhoneAuth.this, MainActivity.class);
                             //i.putExtra("new", "no");
                             startActivity(i);
-                            Handler handler = new Handler();
+                            /*Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     finish();
                                 }
-                            },3000);
+                            },3000);*/
 
 
-
-                        }else {
+                        } else {
                             Log.e("TAG", "Does Not Exits");
-                            user.updateEmail(email);
-                            Toast.makeText(getBaseContext(),"your email is "+email,Toast.LENGTH_LONG).show();
+                            sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            final SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString("UEMAIL", email);
+                            editor.commit();
+                            //Toast.makeText(getBaseContext(),"your email is "+email,Toast.LENGTH_LONG).show();
                             Intent i = new Intent(VeifyPhoneAuth.this, ExtraInfoForm.class);
                             //i.putExtra("new", "yes");
                             startActivity(i);
-                            finish();
+                            // finish();
 
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(VeifyPhoneAuth.this,"SOMETHING WENT WRONG",Toast.LENGTH_LONG).show();
+                Toast.makeText(VeifyPhoneAuth.this, "SOMETHING WENT WRONG", Toast.LENGTH_LONG).show();
 
             }
         });

@@ -293,6 +293,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         FragmentManager mFragmentManager = ((FragmentActivity) this).getSupportFragmentManager();
 
+        if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
+            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible()) {
+                Toast.makeText(getBaseContext(), "I was here", Toast.LENGTH_SHORT).show();
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
+        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (mFragmentManager.getBackStackEntryCount() == 1) {
@@ -303,8 +312,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //MainActivity.toggleTutIcon(this,false);
             finish();
         } else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
-            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible())
-                finish();
+            if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible()){
+                Toast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+            }
             else if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT") != null || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT") != null) {
                 try {
                     if (mFragmentManager.findFragmentByTag("BOOKING_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("ARRIVAL_STATUS_FRAGMENT").isVisible() || mFragmentManager.findFragmentByTag("REQUEST_STATUS_FRAGMENT").isVisible()) {
@@ -320,8 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //oast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
                     } else
                         super.onBackPressed();
-                }catch (Exception e) {
-                }
+                }catch (Exception e) { }
             }
             else
                 super.onBackPressed();
@@ -341,8 +354,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 else
                     super.onBackPressed();
-            } catch (Exception e) {
-            }
+            } catch (Exception e) { }
 
         } else super.onBackPressed();
     }

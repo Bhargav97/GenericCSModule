@@ -30,10 +30,10 @@ import java.util.Map;
 
 public class HostInfoFragment extends Fragment {
     Button submitButton;
-    EditText phoneInput, addressInput, nameInput, cityInput, countryInput, stateInput, ageInput;
+    EditText phoneInput, descEditText, emailEditText, addressInput, nameInput, cityInput, countryInput, stateInput, ageInput;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-
+    String email;
     final private String PHONE_KEY = "Phone";
     final private String ADDRESS_KEY = "Address";
     final private String EMAIL_KEY = "Email";
@@ -57,7 +57,8 @@ public class HostInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.host_info_layout, container, false);
-
+         final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+       // final SharedPreferences.Editor editor = sharedpreferences.edit();
 
         submitButton = v.findViewById(R.id.submitButton);
         mAuth = FirebaseAuth.getInstance();
@@ -69,6 +70,8 @@ public class HostInfoFragment extends Fragment {
         countryInput = v.findViewById(R.id.country);
         stateInput = v.findViewById(R.id.state);
         ageInput = v.findViewById(R.id.age);
+        descEditText = v.findViewById(R.id.descHIL);
+        emailEditText = v.findViewById(R.id.emailHIL);
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //Auto-fill name and phone number if available
         try {
@@ -83,15 +86,18 @@ public class HostInfoFragment extends Fragment {
                 String phoneNumber = currentUser.getPhoneNumber();
                 phoneInput.setText(phoneNumber);
             }
-        }
-        catch (Exception e){}
+        }catch (Exception e){}
+        email = sharedpreferences.getString("UEMAIL","");
+        emailEditText.setText(email);
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 String UID = currentUser.getUid();
-                String email = currentUser.getEmail();
-                String name = "", photoUrl = "", phoneNumber = "", country = "", state = "", city = "", address = "", age = "";
+                String name = "", photoUrl = "", phoneNumber = "", country = "", state = "", city = "", address = "", age = "", desc="";
+
+
 
                 if (nameInput.getText().toString().trim().equalsIgnoreCase("")) {
                     nameInput.setError("This field can not be blank");
@@ -134,9 +140,14 @@ public class HostInfoFragment extends Fragment {
                 } else {
                     country = countryInput.getText().toString();
                 }
+                if (descEditText.getText().toString().trim().equalsIgnoreCase("")) {
+                    descEditText.setError("Let the world know your awesomeness!");
+                } else {
+                    desc = descEditText.getText().toString();
+                }
 
 
-                if (!name.equals("") && !phoneNumber.equals("") && !country.equals("") && !state.equals("") && !city.equals("") && !address.equals("") && !age.equals("")) {
+                if (!name.equals("") && !phoneNumber.equals("") && !country.equals("") && !state.equals("") && !city.equals("") && !address.equals("") && !age.equals("") && !desc.equals("")) {
                     Map<String, Object> newUser = new HashMap<>();
                     newUser.put(EMAIL_KEY, email);
                     newUser.put(PHONE_KEY, phoneNumber);
@@ -155,6 +166,7 @@ public class HostInfoFragment extends Fragment {
                     newUser.put(DP_CHANGE_KEY,0);
                     newUser.put(COUCH_ID_COUNTER_KEY,0);
                     newUser.put(PENDING_REQ_KEY,0);
+                    newUser.put(DESC_KEY,desc);
                     //Creating an empty couch subcollection first
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered
@@ -221,7 +233,6 @@ public class HostInfoFragment extends Fragment {
                     editor.putInt("PENDING_REQUESTS",0);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
                 }
 
             }

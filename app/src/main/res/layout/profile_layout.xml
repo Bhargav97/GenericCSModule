@@ -55,6 +55,19 @@
                         style="@style/Widget.AppCompat.Button.Colored"/>
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/extProfile"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="To see what your profile looks like to others, click HERE!"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:padding="10dp" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -30,9 +30,11 @@ import java.util.Map;
 
 public class TravellerInfoFragment extends Fragment {
     Button submitButton;
-    EditText phoneInput, addressInput, nameInput, cityInput, countryInput, stateInput, ageInput;
+    EditText phoneInput, descEditText, emailEditText, addressInput, nameInput, cityInput, countryInput, stateInput, ageInput;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    final private String DESC_KEY = "DESC";
+    String email;
     final private String COUCH_ID_COUNTER_KEY = "Couch_Created_Till_Date";
     final private String PHONE_KEY = "Phone";
     final private String ADDRESS_KEY = "Address";
@@ -47,7 +49,7 @@ public class TravellerInfoFragment extends Fragment {
     final private String COUCHCOUNTER_KEY = "No_Of_Couch";
     final private String BOOKING_COUNTER_KEY = "No_Of_Bookings";
     final private String CUSTOM_DP_KEY = "CUSTOM_DP";
-    final private String DESC_KEY = "DESC";
+
     final private String DP_CHANGE_KEY = "DP_CHANGE_COUNT";
     final private String PENDING_REQ_KEY = "PENDING_REQUEST";
     @Nullable
@@ -55,6 +57,7 @@ public class TravellerInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.travellers_info_layout, container, false);
 
+        final SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
 
         submitButton = v.findViewById(R.id.submitButton);
         mAuth = FirebaseAuth.getInstance();
@@ -66,6 +69,8 @@ public class TravellerInfoFragment extends Fragment {
         countryInput = v.findViewById(R.id.country);
         stateInput = v.findViewById(R.id.state);
         ageInput = v.findViewById(R.id.age);
+        descEditText = v.findViewById(R.id.descTIL);
+        emailEditText = v.findViewById(R.id.emailTIL);
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //Auto-fill name and phone number if available
         try {
@@ -82,13 +87,14 @@ public class TravellerInfoFragment extends Fragment {
             }
         }
         catch (Exception e){}
+        email = sharedpreferences.getString("UEMAIL","");
+        emailEditText.setText(email);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 String UID = currentUser.getUid();
-                String email = currentUser.getEmail();
-                String name = "", photoUrl = "", phoneNumber = "", country = "", state = "", city = "", address = "", age = "";
+                String name = "", photoUrl = "", phoneNumber = "", country = "", state = "", city = "", address = "", age = "",desc="";
 
                 if (nameInput.getText().toString().trim().equalsIgnoreCase("")) {
                     nameInput.setError("This field can not be blank");
@@ -131,7 +137,13 @@ public class TravellerInfoFragment extends Fragment {
                 } else {
                     country = countryInput.getText().toString();
                 }
-                if (!name.equals("") && !phoneNumber.equals("") && !country.equals("") && !state.equals("") && !city.equals("") && !address.equals("") && !age.equals("")) {
+                if (descEditText.getText().toString().trim().equalsIgnoreCase("")) {
+                    descEditText.setError("Let the world know your awesomeness!");
+                } else {
+                    desc = descEditText.getText().toString();
+                }
+
+                if (!name.equals("") && !phoneNumber.equals("") && !country.equals("") && !state.equals("") && !city.equals("") && !address.equals("") && !age.equals("")&& !desc.equals("")) {
                     Map<String, Object> newUser = new HashMap<>();
                     newUser.put(EMAIL_KEY, email);
                     newUser.put(PHONE_KEY, phoneNumber);
@@ -150,6 +162,7 @@ public class TravellerInfoFragment extends Fragment {
                     newUser.put(DP_CHANGE_KEY,0);
                     newUser.put(COUCH_ID_COUNTER_KEY,0);
                     newUser.put(PENDING_REQ_KEY,0);
+                    newUser.put(DESC_KEY,desc);
                     HashMap<String,Object> init = new HashMap<>();
                     init.put("ContainsData",false); //ContainsData will be true if a couch has been registered
                     db = FirebaseFirestore.getInstance();
@@ -174,14 +187,14 @@ public class TravellerInfoFragment extends Fragment {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(getActivity(), "User Registered",
+                                    Toast.makeText(getContext(), "User Registered",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getActivity(), "ERROR" + e.toString(),
+                                    Toast.makeText(getContext(), "ERROR" + e.toString(),
                                             Toast.LENGTH_SHORT).show();
                                     Log.d("TAG", e.toString());
                                 }
@@ -196,7 +209,6 @@ public class TravellerInfoFragment extends Fragment {
                     editor.putInt("PENDING_REQUESTS",0);
                     editor.commit();
                     startActivity(new Intent(getActivity(), MainActivity.class));
-                    getActivity().finish();
 
                 }
 

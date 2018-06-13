@@ -30,6 +30,7 @@ public class ExternalProfileViewActivity extends Activity {
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
     final private String PHONE_KEY = "Phone";
+    final private String DESC_KEY = "DESC";
     final private String ADDRESS_KEY = "Address";
     final private String EMAIL_KEY = "Email";
     final private String NAME_KEY = "Name";
@@ -58,13 +59,14 @@ public class ExternalProfileViewActivity extends Activity {
         setActionBar(toolbar);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(true);*/
-        final TextView nameText, phoneText, emailText, cityText;
+        final TextView nameText, phoneText, emailText, cityText, descText;
         nameText = findViewById(R.id.nameTextEP);
         cityText = findViewById(R.id.cityTextEP);
         phoneText = findViewById(R.id.phoneTextEP);
         emailText = findViewById(R.id.emailTextEP);
         profilePic = findViewById(R.id.profilePic);
         View view = findViewById(R.id.emptyView);
+        descText = findViewById(R.id.descTextEP);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +116,7 @@ public class ExternalProfileViewActivity extends Activity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         DocumentSnapshot documentSnapshot = task.getResult();
+                        descText.setText(" " + documentSnapshot.get(DESC_KEY).toString());
                         nameText.setText("  " + documentSnapshot.get(NAME_KEY).toString());
                         cityText.setText("  " + documentSnapshot.get(CITY_KEY).toString() + ", " + documentSnapshot.get(STATE_KEY).toString() + ", " + documentSnapshot.get(COUNTRY_KEY).toString());
                         emailText.setText("  "+ documentSnapshot.get(EMAIL_KEY).toString());

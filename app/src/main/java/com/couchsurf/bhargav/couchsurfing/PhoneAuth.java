@@ -35,9 +35,16 @@ public class PhoneAuth extends AppCompatActivity {
                 intent2.putExtra("mobile", mobile);
                 intent2.putExtra("email",userEmail);
                 startActivity(intent2);
-                finish();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+        super.onBackPressed();
+    }
 }
