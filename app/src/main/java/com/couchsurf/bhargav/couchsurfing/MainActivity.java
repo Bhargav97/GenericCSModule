@@ -274,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.clear();
                 editor.putBoolean("SIGNED_IN", false);
                 editor.commit();
+                UtilityClass.phoneVerifyDone=false;
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
                 break;
