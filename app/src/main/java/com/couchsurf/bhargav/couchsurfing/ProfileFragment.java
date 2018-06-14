@@ -74,8 +74,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     final private int PICKFILE_RESULT_CODE = 2; //just a req code
     private static String Uid;
     private String imagePath;
-    private static final String KEY = "AKIAJAK4TMOGHLIM4IUQ";
-    private static final String SECRET = "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";
     private static final String BUCKET_NAME = "couchsurfing-userfiles-mobilehub-151528593";
     ImageView profileImage;
     final private String PHONE_KEY = "Phone";
@@ -109,7 +107,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     public void downloadWithTransferUtility(String key) {
 
-        BasicAWSCredentials credentials = new BasicAWSCredentials(KEY, SECRET);
+        BasicAWSCredentials credentials = new BasicAWSCredentials(SecretKeys.KEY, SecretKeys.SECRET);
         AmazonS3Client s3Client = new AmazonS3Client(credentials);
 
         TransferUtility transferUtility =
@@ -164,7 +162,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                                 if (DP_CHANGE_COUNT == 0)
                                     flag = false;
                                 else {
-                                    BasicAWSCredentials credentials = new BasicAWSCredentials(KEY, SECRET);
+                                    BasicAWSCredentials credentials = new BasicAWSCredentials(SecretKeys.KEY, SecretKeys.SECRET);
                                     AmazonS3Client s3Client = new AmazonS3Client(credentials);
                                     url = s3Client.getResourceUrl(BUCKET_NAME, FOLDER + key + EXT);
                                 }
@@ -177,7 +175,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void uploadAndChangeDpWithTransferUtility(String key, String filepath) {
 
 
-        BasicAWSCredentials credentials = new BasicAWSCredentials(KEY, SECRET);
+        BasicAWSCredentials credentials = new BasicAWSCredentials(SecretKeys.KEY, SecretKeys.SECRET);
         AmazonS3Client s3Client = new AmazonS3Client(credentials);
 
         TransferUtility transferUtility =

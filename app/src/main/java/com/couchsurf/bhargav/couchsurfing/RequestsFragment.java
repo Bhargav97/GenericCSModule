@@ -84,8 +84,6 @@ public class RequestsFragment extends Fragment {
     static FirebaseFirestore db;
     static FirebaseUser firebaseUser;
     static public String UID;
-    private static final String KEY = "AKIAJAK4TMOGHLIM4IUQ";
-    private static final String SECRET = "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";
     private static final String BUCKET_NAME = "couchsurfing-userfiles-mobilehub-151528593";
     static DocumentReference databaseReference;
     public static ArrayList<Map<String, Object>> mapOfRequests;

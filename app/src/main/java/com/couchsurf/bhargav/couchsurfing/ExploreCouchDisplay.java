@@ -60,8 +60,6 @@ public class ExploreCouchDisplay extends Fragment implements View.OnClickListene
     View v;
     ProgressBar progressBar;
     ImageView img1, img2, img3, img4, img5, img6;
-    private static final String KEY = "AKIAJAK4TMOGHLIM4IUQ";
-    private static final String SECRET = "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";
     private static final String BUCKET_NAME = "couchsurfing-userfiles-mobilehub-151528593";
     final private String PHONE_KEY = "Phone";
     final private String ADDRESS_KEY = "Address";
