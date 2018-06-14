@@ -201,6 +201,7 @@ public class VeifyPhoneAuth extends AppCompatActivity {
     }
 
     public void updateUI(final FirebaseUser user) {
+        UtilityClass.phoneVerifyDone=true;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(user.getUid());
         docRef.get()

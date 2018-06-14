@@ -289,11 +289,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });*/
 
-        if (user.getUid().trim().equals("TEtRI4BAGDQvXdsEcl4TooRi8es2") || user.getUid().trim().equals("UmluwDSH7HapDTK5ZsC1KSS2LLw1") || user.getUid().trim().equals("kDPSjUG6BifK9Jnz65QtjaEZvSU2") || user.getUid().trim().equals("lTahbHyf1sQuKLP3XF6bKngWzEd2")) {
 
+        if (user.getUid().trim().equals("TEtRI4BAGDQvXdsEcl4TooRi8es2") || user.getUid().trim().equals("UmluwDSH7HapDTK5ZsC1KSS2LLw1") || user.getUid().trim().equals("kDPSjUG6BifK9Jnz65QtjaEZvSU2") || user.getUid().trim().equals("lTahbHyf1sQuKLP3XF6bKngWzEd2")) {
+            DocumentReference docRef;
             SharedPreferences sharedpreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             final SharedPreferences.Editor editor = sharedpreferences.edit();
-            DocumentReference docRef = db.collection("users").document(user.getUid());
+
+            docRef = db.collection("users").document(user.getUid());
+
+
             docRef.get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override

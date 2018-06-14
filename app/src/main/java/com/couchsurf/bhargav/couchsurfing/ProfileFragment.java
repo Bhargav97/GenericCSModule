@@ -295,7 +295,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         firebaseUser = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
         Uid = firebaseUser.getUid();
-        Toast.makeText(getActivity().getBaseContext(),"your email is "+firebaseUser.getEmail(),Toast.LENGTH_LONG).show();
+        //Toast.makeText(getActivity().getBaseContext(),"your email is "+firebaseUser.getEmail(),Toast.LENGTH_LONG).show();
         updateProfilePic(profileImage);
         DocumentReference user = db.collection("users").document(Uid);
         user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

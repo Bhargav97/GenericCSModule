@@ -30,8 +30,18 @@
         android:layout_marginTop="-50dp"
         android:background="@drawable/waves" />
 
+    <ProgressBar
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/marker_progressPA"
+        style="?android:attr/progressBarStyle" />
+
     <RelativeLayout
-        android:id="@+id/container"
+        android:id="@+id/containerPA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/imageView"

@@ -2,6 +2,8 @@ package com.couchsurf.bhargav.couchsurfing;
 
 public class UtilityClass {
 
+    public static boolean phoneVerifyDone=false;
+
     public static boolean fromStatus=false;
 
     public static String getUidFromUrl(String url) {

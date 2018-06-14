@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseUser = mAuth.getCurrentUser();
         //Go to your specific database directory or Child
         DocumentReference databaseReference = FirebaseFirestore.getInstance().collection("users").document(firebaseUser.getUid());
-        Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
         //Connect the views of navigation bar
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         userName = (TextView) navigationView.getHeaderView(0).findViewById(R.id.navUserName);
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
             if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible()) {
-                Toast.makeText(getBaseContext(), "I was here", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(), "I was here", Toast.LENGTH_SHORT).show();
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);
                 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT") != null) {
             if (mFragmentManager.findFragmentByTag("HOME_FRAGMENT").isVisible()){
-                Toast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(),"I was here",Toast.LENGTH_SHORT).show();
                 Intent startMain = new Intent(Intent.ACTION_MAIN);
                 startMain.addCategory(Intent.CATEGORY_HOME);
                 startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
